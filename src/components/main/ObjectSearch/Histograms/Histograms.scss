@@ -1,0 +1,109 @@
+@import '../../../../App.scss';
+
+
+.objectSarch_section2 {
+    margin-top: 15px;
+
+    .found {
+        font-size: 18px;
+        color: $prime_4;
+        margin: 17px 0 27px;
+    }
+
+    .wrapper_histograms {
+        display: flex;
+        align-items: center;
+
+        .arrow_active {
+            cursor: pointer;
+        }
+
+        .arrow_passive {
+            opacity: 0.2;
+        }
+
+        .histograms {
+            display: flex;
+            border: 2px solid $prime_1;
+            border-radius: 10px;
+            overflow: hidden;
+            width: 100%;
+            height: 158px;
+
+            .column {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+            }
+
+            .columnNames {
+                background-color: $prime_1;
+                color: $prime_3;
+                z-index: 2;
+                padding: 17px 0 17px 28px;
+                font-size: 20px;
+                min-width: 140px;
+            }
+
+            .columnResult {
+                align-items: center;
+                border-right: 2px solid rgba($prime_4, 0.4);
+                font-size: 18px;
+                height: 124px;
+                width: attr(dataWidth);
+            }
+
+            .columnResult:last-of-type {
+                border-right: none;
+            }
+    
+            .flow {
+                display: flex;
+                min-width: 100%;
+                transition: 1s transform 0s;
+                padding: 17px 0;
+            }
+
+            .noDate {
+                margin: auto;
+                font-size: 20px;
+            }
+        }
+    }
+}
+
+
+@media screen and (max-width: 600px) {
+    .objectSarch_section2 {
+
+        .wrapper_histograms {
+            display: flex;
+            align-items: center;
+    
+            .histograms {
+                flex-direction: column;
+
+                .column {
+                    flex-direction: row;
+                }
+    
+                .columnNames {
+                    padding: 17px 0;
+                }
+    
+                .columnResult {
+                    min-width: 100%;
+                    align-items: center;
+                    border-right: none;
+                    font-size: 18px;
+                    height: auto;
+                }
+
+                .elemColumn {
+                    width: 33.33%;
+                    text-align: center;
+                }
+            }
+        }
+    }
+}

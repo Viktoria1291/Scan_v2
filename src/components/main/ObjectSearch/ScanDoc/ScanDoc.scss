@@ -1,0 +1,80 @@
+@import '../../../../App.scss';
+
+
+.doc {
+    width: calc((100% - 38px) / 2);
+    padding: 19px 30px 35px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    font-size: 16px;
+    margin-bottom: 38px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .mainDoc {
+
+        .span {
+            color: $prime_4;
+            margin-right: 14px;
+        }
+
+        .link {
+            text-decoration-color: $prime_4;
+        }
+
+        .h6OS {
+            margin-top: 24px;
+        }
+
+        .wrapperBeidg {
+            display: flex;
+            height: 22px;
+            margin-top: 14px;
+
+            .beidg {
+                background-color: $supplemental_1;
+                border-radius: 5px;
+                padding: 3px 13px;
+                margin-right: 10px;
+                display: flex;
+                align-items: center;
+            }
+        }
+
+        .imgDoc {
+            background-repeat: no-repeat;
+            background-position: center;
+            border-radius: 10px;
+            height: 158px;
+        }
+
+        .textDoc {
+            color: rgba(0, 0, 0, 0.5);
+            margin-top: 20px;
+        }
+    }
+
+    
+    .wrapperBottomDoc {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-top: 32px;
+
+        .btnLinkDoc {
+            background-color: $supplemental_2;
+            padding: 14px 30px;
+            border-radius: 5px;
+
+            .linkDoc {
+                color: black;
+                text-decoration: none;
+            }
+        }
+
+        .countWorld {
+            color: $prime_4;
+        }
+    }
+}

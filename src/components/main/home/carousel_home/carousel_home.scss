@@ -1,0 +1,55 @@
+@import '../../../../App.scss';
+
+.wrapper_carousel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 70px 0;
+    width: 100%;
+
+    .arrow_carousel {
+        display: flex;
+        align-items: center;
+        width: 39px;
+    }
+
+    .carousel {
+        width: calc(100% - 78px);
+        overflow: hidden;
+        padding: 20px 0;
+
+        .flow {
+            display: flex;
+            transition: 1s all 0s;
+        }
+
+        .carousel_item {
+            min-width: calc((100% - 90px)/3);
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            padding: 22px 20px 45px;
+            margin: 0 15px;
+        }
+
+        .svgIcon {
+            height: 65px;
+            margin-bottom: 12px;
+        }
+    }
+
+
+}
+
+
+
+@media screen and (max-width: 700px) {
+    .wrapper_carousel {
+        margin: 32px 0 60px;        
+        .carousel {   
+            .carousel_item {
+                min-width: calc(100% - 30px);
+            }
+        }
+    }
+}
+

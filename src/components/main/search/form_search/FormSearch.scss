@@ -1,0 +1,77 @@
+@import '../../../../App.scss';
+
+
+.formSearch {
+    display: flex;
+    width: 872px;
+    margin: 0 0 64px;
+    color: #000;
+    font-size: 18px;
+    padding: 29px 39px 32px 44px;
+
+    .formLeft {
+        width: 374px;
+        min-width: 374px;
+        margin-right: 15px;
+    }
+
+    .formRight {
+        width: 406px;
+        min-width: 406px;
+
+        .wrapperButton {
+            width: 305px;
+            display: block;
+            margin: 70px 0 0 auto;
+        }
+
+        .errorReq {
+            height: 21px;
+            text-align: center;
+            color: rgb(255, 89, 89);
+        }
+    }
+
+    .footnote {
+        font-size: 14px;
+        color: $prime_4;
+    }
+}
+
+
+@media screen and (max-width: 900px) {
+    .formSearch {
+        width: 860px;
+        justify-content: space-between;
+        // margin: 0 auto 64px;
+
+
+        .formRight {
+            width: 394px;
+            min-width: 394px;
+        }
+    }
+}
+
+
+@media screen and (max-width: 600px) {
+    .formSearch {
+        width: 100%;
+        margin: 0 auto 64px;
+        flex-direction: column;
+
+        .formRight {
+            .wrapperButton {
+                margin: 0px auto 0;
+            }
+        }
+        
+        .wrapperInput input {
+            display: flex;
+        }
+
+        .form_chek {
+            display: none;
+        }
+    }
+}

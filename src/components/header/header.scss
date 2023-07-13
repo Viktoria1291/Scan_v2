@@ -1,0 +1,214 @@
+@import '../../App.scss';
+
+header {
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+    z-index: 3;
+}
+
+.header {
+    height: 93px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+
+    .itemHeader {
+        flex: 0 1 33.33%;
+    }
+
+    .ul {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+
+        .li {
+            flex: 0 1 33.33%;
+            list-style-type: none;
+
+            .a {
+                text-decoration: none;
+                font-size: 14px;
+                color: $prime_2;
+            }
+
+            .a:hover {
+                color: $supplemental_3;
+            }
+        }
+    }
+
+
+    .wrapperPersonalData {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .accountSettings {
+            background-color: rgba(217, 217, 217, .3);
+            border-radius: 5px;
+            min-width: 175px;
+            height: 63px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+
+            .propertyTite {
+                text-align: right;
+                opacity: 40%;
+                font-size: 10px;
+                margin-right: 10px;
+            }
+
+            .propertyValue {
+                font-size: 14px;
+                font-weight: 700;
+            }
+
+            .limit {
+                color: #8AC540;
+            }
+        }
+
+        .accountData {
+            display: flex;
+
+            .name {
+                font-size: 14px;
+                text-align: right;
+
+                .exit {
+                    font-size: 10px;
+                    opacity: 40%;
+                    cursor: pointer;
+                }
+            }
+
+            .avatar {
+                height: 32px;
+                width: 32px;
+                border-radius: 50%;
+                overflow: hidden;
+                margin-left: 10px;
+            }
+        }
+    }
+
+
+    .buttons {
+        display: flex;
+        align-items: center;
+        justify-content: right;
+
+        .buttonHeader {
+            background-color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 12px;
+            font-size: 14px;
+            font-weight: 400;
+            cursor: pointer;
+        }
+
+        .buttonHeader:hover {
+            background-color: $supplemental_2;
+            font-weight: 600;
+        }
+
+        .rectangle {
+            margin: 0 20px;
+            height: 26px;
+        }
+    }
+
+    .burgerMenu {
+        cursor: pointer;
+        display: none;
+        width: 30px;
+        height: 25px;
+    }
+
+    .dropDown {
+        position: absolute;
+        background-color: $prime_1;
+        border-radius: 5px;
+        width: 150px;
+        font-size: 13px;
+        right: 0px;
+        top: 70px;
+        padding: 10px;
+        font-size: 14px;
+        display: none;
+
+        .navBM {
+            .ulBM {
+                padding: 0;                
+            }
+
+            .liBM {
+                margin: 0 0 10px;
+                list-style-type: none;
+                cursor: pointer;                    
+            }
+    
+            .aBM {
+                text-decoration: none;
+                color: $prime_3;                     
+            }
+        }   
+
+        .accountDataBM {
+            margin-top: 10px;
+            font-size: 16px;
+
+            .exit {
+                font-size: 10px;
+                cursor: pointer;
+            }
+        }
+    }
+
+    .aBM:hover {
+        border-bottom: 1px solid $prime_3;
+    }
+    
+    .dropDown::before {
+        content: "";
+        border: 10px solid transparent;
+        border-bottom: 10px solid $prime_1;
+        position: absolute;
+        top: -17px;
+        right: 5px;
+    }
+}
+
+
+@media screen and (max-width: 600px) {
+    .header {
+        .nav {
+            display: none;
+        }
+
+        .reg {
+            display: none;
+        }
+
+        .wrapperPersonalData{
+            .accountData {
+                display: none;
+            }
+        }
+
+        .burgerMenu {
+            display: block;
+        }
+
+        .dropDown {
+            display: block;
+        }
+    }
+}

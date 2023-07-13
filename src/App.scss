@@ -1,0 +1,136 @@
+@font-face {
+  font-family: 'Ferry';
+  src: url('../public/fonts/ferry_black.otf');
+}
+
+$prime_1: #029491;
+$prime_2: #000000;
+$prime_3: #ffffff;
+
+$prime_4: #949494;
+$prime_5: #C7C7C7;
+
+$supplemental_1: #FFB64F;
+$supplemental_2: #7CE3E1;
+$supplemental_3: #5970FF;
+
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+}
+
+body {
+  min-width: 1440px;
+}
+
+.root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex-grow: 1;
+}
+
+.container {
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.h {
+  font-family: 'Ferry', Tahoma, Verdana, sans-serif;
+}
+
+.h1 {
+  font-size: 60px;
+}
+
+.h2 {
+  font-size: 45px;
+}
+
+.h3 {
+  font-size: 40px;
+}
+
+.h4 {
+  font-size: 30px;
+}
+
+.h5 {
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  font-size: 30px;
+}
+
+.h6 {
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  font-size: 26px;
+  font-weight: 600;
+}
+
+@keyframes rotate {
+  0% {transform: rotate(0deg);}
+  40% {transform: rotate(180deg);}
+  60% {transform: rotate(220deg);}
+  100% {transform: rotate(360deg);}
+}
+
+.spinner img {
+  width: 40px;
+  height: 40px;
+  animation: rotate 2s infinite linear;
+}
+
+
+@media screen and (max-width: 900px) {
+  body {
+    min-width: 900px;
+  }
+
+  .container {
+    min-width: 900px;
+  }
+
+  .h1 {
+    font-size: 40px;
+  }
+
+  .h2 {
+    font-size: 35px;
+  }
+
+  .h3 {
+    font-size: 28px;
+  }
+
+  .h4 {
+    font-size: 25px;
+  }
+}
+
+
+@media screen and (max-width: 600px) {
+  body {
+    min-width: 500px;
+  }
+
+  .container {
+    min-width: 500px;
+  }
+
+  .h1, .h2 {
+    font-size: 28px;
+  }
+
+  .h3 {
+    font-size: 22px;
+  }
+
+  .h4 {
+    font-size: 20px;
+  }
+}

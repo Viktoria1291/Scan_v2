@@ -1,0 +1,103 @@
+@import '../../../App.scss';
+
+
+.section1 {
+    display: flex;
+    margin: 69px 0 0px;
+
+    .contentLeft {
+        width: 63%;
+        margin-left: 10px;
+
+        .subTitle {
+            font-size: 20px;
+            margin: 25px 0 47px;
+        }
+    }
+
+    .contentRight {
+        width: 37%;
+        display: flex;
+        justify-content: space-around;
+
+    }
+}
+
+.section2 {
+    display: flex;
+
+    .contentRight {
+        width: calc(100% - 872px);
+        display: flex;
+        justify-content: end;
+    }
+}
+
+
+@media screen and (max-width: 900px) {
+    .section1 {
+        display: block;
+        margin: 69px 0 30px;
+    
+        .contentLeft {
+            width: 100%;
+
+            h3 {
+                font-size: 28px;
+                width: 310px;
+            }
+
+            .subTitle {
+                font-size: 18px;
+                width: 297px;
+            }
+        }
+    
+        .contentRight {
+            width: 80%;
+            margin: 0 0 0 auto;
+        }
+    }
+    
+    .section2 {
+        display: block;
+    
+        .contentRight {
+            width: 100%;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+    }
+}
+
+
+@media screen and (max-width: 600px) {
+    .section1 {    
+        display: flex;
+        
+        .contentRight {
+            justify-content: end;
+            width: 37%;
+
+            .folders {
+                display: none;
+            }
+
+            .document {
+                width: 58px;
+            }
+        }
+    }
+
+    .section2 {
+        flex-direction: column;
+    
+        .contentRight {
+            .imgRight {
+                margin: 0 auto;
+                display: block;
+            }
+        }
+    }
+}
+

@@ -1,0 +1,161 @@
+@import '../../../../App.scss';
+
+
+.hom_sec3_tariffs {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 0 118px;
+    font-size: 18px;
+
+    .current {
+        border: 2px solid var(--background);
+    }
+
+    .tarif {
+        width: 32%;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+        overflow: hidden;
+        margin-top: 70px;
+
+        .sec3_h5 {
+            margin-bottom: 10px;
+        }
+
+        .title {
+            display: flex;
+            justify-content: space-between;
+            color: var(--color);
+            background-color: var(--background);            
+
+            .title_text {
+                margin: 30px 0 34px 30px;
+            }
+
+            .img {
+                margin: 11px 15px 0 0;
+            }
+        }
+
+
+        .currentTariff {
+            height: 24px;
+            margin-top: 12px;
+            display: flex;
+            justify-content: right;
+
+            .badge {
+                color: #fff;
+                background-color: #3BA5E0;
+                border-radius: 10px;
+                height: inherit;
+                padding: 0 13px;
+                margin-right: 10px;
+                font-size: 14px;
+                vertical-align: middle;
+                display: flex;
+                align-items: center;
+            }
+        }
+
+        .text {
+            margin: 0 15px 0 30px;
+
+            .oldPrice {
+                opacity: 50%;
+                text-decoration: line-through;
+                font-size: 25px;
+            }
+        }
+
+        .ul {
+            padding: 0;
+            margin-top: 59px;
+
+            .ul_title {
+                font-size: 20px;
+                font-weight: bold;
+                margin-bottom: 10px;
+            }
+
+            .li {
+                list-style-type: none;
+            }
+    
+            .li:before {
+                content: url(images/greenСheckmark.png);
+                width: 20px;
+                height: 20px;
+                margin-right: 8px;
+                vertical-align: middle;
+            }
+        }
+
+        .buttonTariff {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+
+            background-color: $supplemental_3;
+            width: calc(100% - 60px);
+            height: 59px;
+            margin: 55px 30px 24px;
+            border: none;
+            border-radius: 5px;
+            color: $prime_3;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .buttonCurrent {
+            background-color: #D2D2D2;
+            color: #000;
+        }
+    }
+}
+
+
+@media screen and (max-width: 900px) {
+    .hom_sec3_tariffs {
+        flex-direction: column;
+        margin: 0 0 43px;
+
+        .tarif {
+            width: 60%;
+            margin: 37px auto;
+
+            .title {
+                min-height: auto;
+
+                .title_text {
+                    max-width: 300px;
+                }
+            }
+
+            .ul {
+                min-height: auto;
+            }
+
+            .installment {
+                max-width: 400px;
+            }
+
+            .buttonTariff {
+                margin: 35px 30px 24px;
+            }
+        }
+    }
+}
+
+
+@media screen and (max-width: 600px) {
+    .hom_sec3_tariffs {
+        .tarif {
+            width: 100%;
+        }
+    }
+}
+
+
+

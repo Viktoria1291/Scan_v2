@@ -1,0 +1,180 @@
+@import '../../../../App.scss';
+
+.wrapperForm {
+    width: 429px;
+    margin-left: 65px;
+    padding: 25px 25px 39px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, .15);
+    font-size: 16px;
+    color: $prime_4;
+    position: relative;
+
+    .padlock {
+        position: absolute;
+        top: -50px;
+        left: -50px;
+    }
+
+    .wrapperTab {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 40px;
+
+        .tab {
+            min-width: 151px;
+            text-align: center;
+            border-bottom: 2px solid $prime_5;
+            padding: 0 21px 8px;
+            color: $prime_5;
+        }
+
+        .activeTab {
+            color: $prime_1;
+            border-bottom: 2px solid $prime_1;
+            cursor: pointer;
+        }
+    }
+
+    .form { 
+
+        [dataTooltip] {
+            position: relative; 
+        }
+
+
+        [datatooltip]::after {
+            content: attr(dataTooltip);    /* Выводим текст */
+            position: absolute;            
+            z-index: 2;
+            top: 0px;                      /* Положение подсказки вначале*/
+            left: -364px;
+            box-sizing: border-box;
+            width: 379px;
+            background: $prime_1;    /* Внешний вид */
+            color: $prime_3;
+            border-radius: 5px;
+            padding: 10px;
+            box-shadow:0 5px 12px #ccc;
+            opacity: 0;                    
+            transition:0.34s linear;       
+            pointer-events: none;          /* Предотвратить взаимодействие курсора мыши с подсказкой */
+        }
+
+        
+        [datatooltip]:hover::after {
+            opacity: 100%;
+            top: 77px;                      /*Положение подсказки */
+            left: -364px; 
+        }
+
+        .button::after {
+            left: 0;
+        }
+        
+        .button:hover::after{
+            top: 63px;  
+            left: 0;
+        }
+
+
+        .questionSearch::after {
+            left: -339px;
+            width: 242px;
+        }
+
+        .questionSearch:hover::after {
+            top: 84px; 
+            left: -339px;
+        }
+
+
+        .questionDate::after {
+            left: -335px;
+            width: 370px;
+        }
+
+        .questionDate:hover::after {
+            top: 84px;
+            left: -339px;
+        }
+
+        .buttonSearch::after {
+            width: 305px;
+        }
+
+        .wrapperError {
+            height: 17px;
+            text-align: center;
+
+            .errorMessage {
+                color: rgb(255, 89, 89);
+                font-size: 14px;
+            }
+
+            .errorPassAut {
+                color: $prime_4;
+            }
+        }
+
+        .wrapperErrorSearch {
+            margin: 0 0 7px;
+            width: 242px;
+        }
+
+        .wrapperErrorSearchDate {
+            width: 100%;
+        }
+
+        .recover {
+            display: block;
+            font-size: 14px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+    }
+
+
+    .wrapperButtons {
+        display: flex;
+        align-items: center;
+
+        .servises {
+            width: 96px;
+            height: 31px;
+            margin: 15px 10px 0 0;
+            border-radius: 3px;
+            border: 1px solid rgba($supplemental_3, 0.5);
+            background-color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+}
+
+
+@media screen and (max-width: 900px) {
+    .wrapperForm {
+        margin: 50px 0 45px;
+
+        .padlock {
+            top: -85px;
+            left: 30%;
+        }
+    }
+}
+
+
+@media screen and (max-width: 700px) {
+    .wrapperForm {
+        margin: 126px auto 0;
+    }
+}
+
+
+@media screen and (max-width: 335px) {
+    .wrapperButtons {
+        justify-content: space-between;
+    }
+}

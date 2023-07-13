@@ -1,0 +1,50 @@
+@import '../../../App.scss';
+
+.nonAuth {
+    color: rgb(255, 89, 89);
+    font-size: 20px;
+    margin-top: 20px;
+}
+
+.wrapper {
+    display: flex;
+    margin: 69px 0 80px;
+
+    .contentLeft {
+        width: 55%;
+
+        .authorizationImage701 {
+            max-width: 322px;
+            margin: 14px 0 0 50px;
+        }
+    }
+
+    .authorizationImage700 {
+        display: none;
+    }
+}
+
+
+@media screen and (max-width: 700px) {
+    .wrapper {
+        display: block;
+        margin: 31px auto 80px;
+        text-align: center;
+    
+        .contentLeft {
+            width: 100%;
+            text-align: left;
+
+            .authorizationImage701 {
+                display: none;
+            }
+        }
+    
+        .authorizationImage700 {
+            display: block;
+            max-width: 322px;
+            margin: 49px auto 0;
+        }
+    }
+}
+

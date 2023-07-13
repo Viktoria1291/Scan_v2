@@ -1,0 +1,26 @@
+@import '../../App.scss';
+
+.wrapper_footer {
+    background-color: $prime_1;
+    flex-shrink: 0;
+
+    .footer {
+        height: 137px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: $prime_3;
+
+        .contacts {
+            font-size: 14px;
+            margin-bottom: 21px;
+            text-align: end;
+        }
+
+        .copyright {
+            font-size: 12px;
+            text-align: end;
+        }
+    }
+}
+

@@ -1,0 +1,54 @@
+@import '../../../../../App.scss';
+
+
+.wrapperCheckbox {
+    margin: 8px 0 15px;
+
+    /*скрытие оригинального чекбокса*/
+    .checkbox {
+        position: absolute;
+        z-index: -1;
+        opacity: 0;
+    }
+
+    /*выравнивание лейбла*/
+    .labelCheckbox {
+        display: inline-flex;
+        user-select: none;
+        height: 19px;
+    }
+
+    .labelCheckboxDisabled {
+        color: rgba(0, 0, 0, .4);
+    }
+
+    /*Создание псевдо чекбокса с помощью before*/
+    .labelCheckbox::before {
+        content: '';
+        display: inline-block;
+        width: 18px;
+        height: 18px;
+        flex-shrink: 0;
+        flex-grow: 0;
+        border: 1px solid #000;
+        margin-right: 17px;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: 50% 50%;
+        background-size: contain;
+    }
+
+    .labelCheckboxDisabled::before {
+        border: 1px solid rgba(0, 0, 0, .4);
+    }
+
+    /*цвет границы, цвет фона и фоновую картинку (флажок) для псевдо чекбокса*/
+    .checkbox:checked+.labelCheckbox::before {
+        background-image: url(../../../home/tariffs/images/greenСheckmark.png);
+    }
+
+    .checkbox:checked+.labelCheckboxDisabled::before {
+        background-image: none;
+    }
+}
+
