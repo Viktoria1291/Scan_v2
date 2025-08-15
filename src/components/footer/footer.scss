@@ -1,11 +1,15 @@
 @import '../../App.scss';
 
+:root {
+  --footer-height: 137px;
+}
+
 .wrapper_footer {
     background-color: $prime_1;
     flex-shrink: 0;
 
     .footer {
-        height: 137px;
+        height: --footer-height;
         display: flex;
         justify-content: space-between;
         align-items: center;

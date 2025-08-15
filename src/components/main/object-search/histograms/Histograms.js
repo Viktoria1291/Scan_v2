@@ -1,5 +1,5 @@
 import React from 'react';
-import './Histograms.scss';
+import './histograms.scss';
 import arrow_left_carousel_active from './images/arrow_left_carousel_active.png';
 import arrow_right_carousel_active from './images/arrow_right_carousel_active.png';
 import spinner from '../../../header/images/spinner.png';
@@ -14,7 +14,7 @@ function Histograms () {
     const histograms = useSelector(state => state.objectSearchReducer.histograms);
 
     const searchResultItem = useSelector(state => state.objectSearchReducer.searchResultItem);
-    console.log("searchResultItem: " + searchResultItem.length); /* вывожу для себя */
+    console.log("searchResultItem: " + searchResultItem.length); 
 
     // перебираем histograms и сортируем его элементы по дате с помощью ф-и sortHist
     let sortedHistograms;
@@ -40,30 +40,7 @@ function Histograms () {
             return [...sortHist(less), pivot, ...sortHist(greater)];
         }
     };
-
-    // вычисляем количество найденных вариантов
-   /* let totalVar;
-    if (histograms && histograms.length > 0) {
-        totalVar = sortedHistograms[0].data.reduce((sum, item) => {
-
-            return sum + item.value;
-        }, 0)
-    };*/
-
-    // Вычисляем количество и ширину видимых столбцов в слайдере гистограммы 
-    // для экрана > 900 px:
-    // max количество видимых столбцов 8
-    // ширина всего слайдера 1282px (100%)
-    // ширина титульного столбца 140px
-    // ширина видимого потока 1282 - 140 = 1142px
-    // ширина столбца потока, если длина массива 8 и менее = (1142/длинуМассива*100/1282) %
-
-    // для экрана от 600 до 900
-     // max количество видимых столбцов 4
-    // ширина всего слайдера 782px (100%)
-    // ширина титульного столбца 140px
-    // ширина видимого потока 782 - 140 = 642px
-    // ширина столбца потока, если длина массива 8 и менее = (642/длинуМассива*100/782) %
+    
 
     let numVC;
     let widthVC;

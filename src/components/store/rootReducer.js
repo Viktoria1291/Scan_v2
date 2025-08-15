@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
-import loginReduсer from "./loginReducer";
-import objectSearchReducer from "./objectSearchReducer";
+import authReduсer from "./auth.reducer";
+import objectSearchReducer from "./search.reducer";
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
@@ -18,7 +18,7 @@ const objectSearchPersistConfig = {
 };
 
 const rootReducer = combineReducers({
-    loginReduсer: persistReducer(loginPersistConfig, loginReduсer),
+    loginReduсer: persistReducer(loginPersistConfig, authReduсer),
     objectSearchReducer: persistReducer(objectSearchPersistConfig, objectSearchReducer)
 })
 

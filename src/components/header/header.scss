@@ -1,5 +1,9 @@
 @import '../../App.scss';
 
+:root {
+  --header-height: 93px;
+}
+
 header {
     position: sticky;
     top: 0;
@@ -9,7 +13,7 @@ header {
 }
 
 .header {
-    height: 93px;
+    height: --header-height;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -112,11 +116,14 @@ header {
             font-size: 14px;
             font-weight: 400;
             cursor: pointer;
+            color: inherit; // Наследуем цвет текста
+            text-decoration: none; // Убираем подчеркивание
         }
 
         .buttonHeader:hover {
             background-color: $supplemental_2;
             font-weight: 600;
+            color: inherit; // Сохраняем цвет при наведении
         }
 
         .rectangle {

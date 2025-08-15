@@ -3,7 +3,7 @@ import "./tariffs.scss";
 import lamp from './images/lamp.svg';
 import target from './images/target.svg';
 import notebook from './images/notebook.svg';
-import TariffItem from './tariffItem';
+import TariffItem from './TariffItem';
 
 const prime_1 = '#029491';
 const prime_2 = '#000000';

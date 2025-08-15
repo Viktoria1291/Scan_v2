@@ -1,21 +1,24 @@
-import React from 'react';
-import './Input.scss';
+import React, { useEffect } from 'react';
+import './input.scss';
 import eye_not_visible from './images/eye_not_visible.svg';
 import eye_visible from './images/eye_visible.svg';
 import infoCircle from './images/info-circle.svg';
 import {useSelector, useDispatch} from 'react-redux';
-import {showHidePassword} from '../../../../store/actions';
+import {showHidePassword} from '../../../../store/search.actions';
 
 
-function Input ({name, type, id, validate, invalidValue, placeholder, tooltip, defaultValue}) {
+function Input ({name, type, id, validate, invalidValue, placeholder, tooltip, value}) {
 
-    // в стейт записываем чистоту и инвалидность инпута
     const [touched, setTouched] = React.useState(false);
     const [invalid, setInvalid] = React.useState('');
+    const [inputValue, setInputValue] = React.useState(value || ''); // Локальное состояние
 
     const dispatch = useDispatch();
     const passwordVisible = useSelector(state => state.loginReduсer.passwordVisible);
 
+    useEffect(() => {
+        setInputValue(value || '');
+    }, [value]);
 
     const handleChange = (value) => {
         if (type === 'tel') {
@@ -55,7 +58,7 @@ function Input ({name, type, id, validate, invalidValue, placeholder, tooltip, d
                 onChange={(e) => handleChange(e.target.value)}
                 onBlur={(e) => handleBlur()} 
                 placeholder={placeholder} 
-                defaultValue={defaultValue}
+                value={inputValue}
             />
             <div className={`wrapperError ${id.includes('search') ? 'wrapperErrorSearch' : ''}`}>
                 {(touched && invalid) && 

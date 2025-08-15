@@ -18,6 +18,20 @@
         overflow: hidden;
         margin-top: 70px;
 
+        transition: all 0.3s ease;
+        position: relative;
+        background: white;
+
+        &:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            
+            .buttonTariff {
+                background-color: darken($supplemental_3, 10%);
+                transform: scale(1.02);
+            }
+        }
+
         .sec3_h5 {
             margin-bottom: 10px;
         }
@@ -26,7 +40,8 @@
             display: flex;
             justify-content: space-between;
             color: var(--color);
-            background-color: var(--background);            
+            background-color: var(--background);  
+            transition: background-color 0.3s ease;        
 
             .title_text {
                 margin: 30px 0 34px 30px;
@@ -34,9 +49,13 @@
 
             .img {
                 margin: 11px 15px 0 0;
+                transition: transform 0.3s ease;
             }
         }
 
+        &:hover .title .img {
+            transform: scale(1.1) rotate(5deg);
+        }
 
         .currentTariff {
             height: 24px;
@@ -80,6 +99,11 @@
 
             .li {
                 list-style-type: none;
+                transition: transform 0.2s ease;
+                
+                &:hover {
+                    transform: translateX(5px);
+                }
             }
     
             .li:before {
@@ -88,6 +112,11 @@
                 height: 20px;
                 margin-right: 8px;
                 vertical-align: middle;
+                transition: transform 0.3s ease;
+            }
+
+            .li:hover:before {
+                transform: scale(1.2);
             }
         }
 
@@ -106,6 +135,11 @@
             color: $prime_3;
             font-size: 20px;
             cursor: pointer;
+            transition: all 0.3s ease;
+            
+            &:hover {
+                box-shadow: 0 5px 15px rgba($supplemental_3, 0.4);
+            }
         }
 
         .buttonCurrent {
@@ -153,6 +187,10 @@
     .hom_sec3_tariffs {
         .tarif {
             width: 100%;
+
+            &:hover {
+                transform: translateY(-5px);
+            }
         }
     }
 }

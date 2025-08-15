@@ -3,13 +3,19 @@ import logo from './images/logo_footer.png';
 import './footer.scss';
 import '../../App.scss';
 
+import {Link, useNavigate} from 'react-router-dom';
+
+import ScrollToTopLink from '../ScrollToTopLink';
+
 function Footer() {
     return (
         <footer className='wrapper_footer'>
             <div className='container'>
                 <div className='footer'>
                     <div className='footer_logo'>
-                        <img src={logo} alt="Логотип" width="141"/>
+                        <ScrollToTopLink to="/">
+                            <img src={logo} alt="Логотип" width="141" />
+                        </ScrollToTopLink>
                     </div>
                     <div className='wrapper_contacts'>
                         <div className='contacts'>

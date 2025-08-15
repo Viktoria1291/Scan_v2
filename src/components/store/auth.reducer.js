@@ -1,4 +1,4 @@
-import {ACTIONS} from './actions';
+import {ACTIONS} from './search.actions';
 
 
 // если авторизация прошла успешно и записывается токен, то записываем в userData данный код:
@@ -20,7 +20,7 @@ const initialState = {
     userData: {}
 }
 
-const loginReducer = (state = initialState, action) => {
+const authReducer = (state = initialState, action) => {
     switch(action.type) {
 
         case ACTIONS.DISPLAY_AUTHORIZATION:
@@ -94,4 +94,4 @@ const loginReducer = (state = initialState, action) => {
     }
 }
 
-export default loginReducer;
+export default authReducer;

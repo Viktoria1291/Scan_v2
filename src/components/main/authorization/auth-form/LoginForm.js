@@ -1,18 +1,17 @@
-import React from 'react';
-import './FormsLogin.scss';
+import React, { useEffect } from 'react';
+import './login-form.scss';
 import Input from './Input/Input';
 import Button from './Button/Button';
 import google from './images/Google.svg';
-import facebook from './images/Facebook.svg';
 import yandex from './images/Yandex.svg';
 import padlock from './images/padlock.svg';
-import {useNavigate} from 'react-router-dom';
-import {useSelector, useDispatch} from 'react-redux';
-import {displayAuthorization, sendingRequestAut, getResponseAut, logOutAccount, getResponseAccountSettings, getErrorAccountSettings} from '../../../store/actions';
+import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { displayAuthorization, sendingRequestAut, getResponseAut, logOutAccount, getResponseAccountSettings, getErrorAccountSettings } from '../../../store/search.actions';
+import { Link } from 'react-router-dom';
 
 
-function FormsLogin () {
-
+function LoginForm() {
     const [formReg, setFormReg] = React.useState({
         telValue: '',
         mailValue: '',
@@ -20,13 +19,12 @@ function FormsLogin () {
         passwordValue: '',
         confirmPasswordValue: '',
     });
-    
+
     const [formAut, setFormAut] = React.useState({
         loginValue: '',
         passwordValue: '',
         exampleValue: '',
     });
-    
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -41,7 +39,7 @@ function FormsLogin () {
     const clickAuthorization = () => {
         dispatch(displayAuthorization())
     }
-   
+
     const validate = (id, value) => {
         const regExpLogin = /^[a-zA-Z0-9_]{3,20}$/i;
         const regExpTel = /\+7\d{10}/;
@@ -50,42 +48,41 @@ function FormsLogin () {
 
         if (id === 'loginAut') {
             if (regExpLogin.test(value) || regExpTel.test(value) || regExpMail.test(value)) {
-                setFormAut({...formAut, loginValue: value})
-            } else {setFormAut({...formAut, loginValue: ''})}
+                setFormAut({ ...formAut, loginValue: value })
+            } else { setFormAut({ ...formAut, loginValue: '' }) }
             return regExpLogin.test(value) || regExpTel.test(value) || regExpMail.test(value);
         }
         else if (id === 'passwordAut') {
-            setFormAut({...formAut, passwordValue: value})
+            setFormAut({ ...formAut, passwordValue: value })
             return regExpPass.test(value);
         }
 
         else if (id === 'telReg') {
-            if (regExpTel.test(value)) {setFormReg({...formReg, telValue: value})}
-            else {setFormReg({...formReg, telValue: ''})}
+            if (regExpTel.test(value)) { setFormReg({ ...formReg, telValue: value }) }
+            else { setFormReg({ ...formReg, telValue: '' }) }
             return regExpTel.test(value);
         }
         else if (id === 'mailReg') {
-            if (regExpMail.test(value)) {setFormReg({...formReg, mailValue: value})}
-            else {setFormReg({...formReg, mailValue: ''})}
+            if (regExpMail.test(value)) { setFormReg({ ...formReg, mailValue: value }) }
+            else { setFormReg({ ...formReg, mailValue: '' }) }
             return regExpMail.test(value);
         }
         else if (id === 'loginReg') {
-            if (regExpLogin.test(value)) {setFormReg({...formReg, loginValue: value})}
-            else {setFormReg({...formReg, loginValue: ''})}
+            if (regExpLogin.test(value)) { setFormReg({ ...formReg, loginValue: value }) }
+            else { setFormReg({ ...formReg, loginValue: '' }) }
             return regExpLogin.test(value);
         }
         else if (id === 'passwordReg') {
-            if (regExpPass.test(value)) {setFormReg({...formReg, passwordValue: value})}
-            else {setFormReg({...formReg, passwordValue: ''})}
+            if (regExpPass.test(value)) { setFormReg({ ...formReg, passwordValue: value }) }
+            else { setFormReg({ ...formReg, passwordValue: '' }) }
             return regExpPass.test(value);
         }
         else if (id === 'confirmPasswordReg') {
-            if (value === formReg.passwordValue) {setFormReg({...formReg, confirmPasswordValue: value})}
-            else {setFormReg({...formReg, confirmPasswordValue: value})}
+            if (value === formReg.passwordValue) { setFormReg({ ...formReg, confirmPasswordValue: value }) }
+            else { setFormReg({ ...formReg, confirmPasswordValue: value }) }
             return value === formReg.passwordValue
         }
     }
-
 
     const invalidField = 'Введите корректные данные';
     const invalidPasAut = 'Возможно в пароле допущена ошибка';
@@ -95,13 +92,45 @@ function FormsLogin () {
     const validLogin = 'Логин должен содержать только латинские буквы или цыфры. Не допускается употребление специальных символов. Общая длина логина от 3 до 20 символов.';
     const validPassword = 'Пароль должен иметь не менее 8 символов, содержать хотя бы: 1 цифру, 1 символ нижнего регистра, 1 символ верхнего регистра латиницы, один специальный символ !@#$%^&*';
     const validConfirmPas = 'Пароли должны совпадать';
-    
 
 
-    const urlAuth = `https://gateway.scan-interfax.ru/api/v1/account/login`;
-    
+    useEffect(() => {
+        const savedLogin = localStorage.getItem('demoLogin');
+        const savedPassword = localStorage.getItem('demoPassword');
+
+        setFormAut(prev => ({
+            ...prev,
+            loginValue: savedLogin || 'sf_student10',
+            passwordValue: savedPassword || 'KHKfTXb'
+        }));
+
+        if (!savedLogin) {
+            localStorage.setItem('demoLogin', 'sf_student10');
+        }
+        if (!savedPassword) {
+            localStorage.setItem('demoPassword', 'KHKfTXb');
+        }
+    }, []);
+
+    useEffect(() => {
+        if (formAut.loginValue && formAut.passwordValue) {
+            localStorage.setItem('demoLogin', formAut.loginValue);
+            localStorage.setItem('demoPassword', formAut.passwordValue);
+        }
+    }, [formAut.loginValue, formAut.passwordValue]);
+
+    // Функция для сохранения данных
+    const saveCredentials = () => {
+        // Сохраняем текущие значения (если пользователь их изменил)
+        localStorage.setItem('demoLogin', formAut.loginValue);
+        localStorage.setItem('demoPassword', formAut.passwordValue);
+    };
 
     const sendRequest = (event) => {
+        event.preventDefault();
+
+        saveCredentials();
+
         dispatch(logOutAccount());
         const options = {
             method: 'POST',
@@ -110,7 +139,7 @@ function FormsLogin () {
                 "password": `${formAut.passwordValue}`
             }),
             headers: {
-                "Content-type": "application/json", 
+                "Content-type": "application/json",
                 "Accept": "application/json",
             }
         }
@@ -131,76 +160,72 @@ function FormsLogin () {
                     dispatch(getResponseAut(result));
                 }
                 else {
-                    dispatch(getResponseAut({errorCode: '', message: 'Отказ в доступе'}));
+                    dispatch(getResponseAut({ errorCode: '', message: 'Отказ в доступе' }));
                 }
-                
+
                 return result;
             })
             .catch(() => {
-                dispatch(getResponseAut({errorCode: '', message: 'Ошибка запроса'}));
+                dispatch(getResponseAut({ errorCode: '', message: 'Ошибка запроса' }));
             })
-
-        event.preventDefault();
     }
 
-
-
+    const urlAuth = `https://gateway.scan-interfax.ru/api/v1/account/login`;
 
 
     return (
         <div className='wrapperForm'>
-            <img src={padlock} alt="Изображение замок" className='padlock'/>
+            <img src={padlock} alt="Изображение замок" className='padlock' />
             <div className="wrapperTab">
                 <div className='tab activeTab' onClick={clickAuthorization}>Войти</div>
-                <div className='tab'>Зарегистрироваться</div>
+                <Link to="/registration" className='tab'>Зарегистрироваться</Link>
             </div>
 
             <form action="" className='form' onSubmit={sendRequest}>
-                    <Input
-                        name={'Логин, e-mail или номер телефона:'}
-                        type={"text"} 
-                        id={'loginAut'} 
-                        validate={validate}
-                        invalidValue={invalidField} 
-                    />
+                <Input
+                    name={'Логин, e-mail или номер телефона:'}
+                    type={"text"}
+                    id={'loginAut'}
+                    value={formAut.loginValue}
+                    validate={validate}
+                    invalidValue={invalidField}
+                />
 
-                    <Input
-                        name={'Пароль:'}
-                        type={`${passwordVisible ? 'text' : "password"}`} 
-                        id={'passwordAut'} 
-                        validate={validate}
-                        invalidValue={invalidPasAut} 
-                    />
+                <Input
+                    name={'Пароль:'}
+                    type={`${passwordVisible ? 'text' : "password"}`}
+                    id={'passwordAut'}
+                    value={formAut.passwordValue}
+                    validate={validate}
+                    invalidValue={invalidPasAut}
+                />
 
-                    <div className='wrapperError'> 
-                        {errorRespAut && <span className='errorMessage'>{errorRespAut.message}</span>}
-                    </div>
+                <div className='wrapperError'>
+                    {errorRespAut && <span className='errorMessage'>{errorRespAut.message}</span>}
+                </div>
 
-                    <Button
-                        type={'submit'} 
-                        name={'Login'}
-                        value={'Войти'}
-                        disabled={!isFormAutFull}
-                    />
+                <Button
+                    type={'submit'}
+                    name={'Login'}
+                    value={'Войти'}
+                    disabled={!isFormAutFull}
+                />
 
-                    <a href="#" className='recover'>Восстановить пароль</a>
-                </form>     
+                <a href="#" className='recover'>Восстановить пароль</a>
+            </form>
 
-                    
+
             <div>Войти через:</div>
             <div className='wrapperButtons'>
                 <button className='servises'>
-                    <img src={google} alt="Google" width="59"/>
+                    <img src={google} alt="Google" width="59" />
                 </button>
                 <button className='servises'>
-                    <img src={facebook} alt="Facebook" width="59"/>
-                </button>
-                <button className='servises'>
-                    <img src={yandex} alt="Yandex" width="59"/>
+                    <img src={yandex} alt="Yandex" width="59" />
                 </button>
             </div>
         </div>
     )
 }
 
-export default FormsLogin;
+export default LoginForm;

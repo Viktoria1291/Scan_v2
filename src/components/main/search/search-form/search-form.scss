@@ -22,13 +22,14 @@
         .wrapperButton {
             width: 305px;
             display: block;
-            margin: 70px 0 0 auto;
+            margin: 50px 0 0 auto;
         }
 
         .errorReq {
-            height: 21px;
+            height: 37px;
             text-align: center;
             color: rgb(255, 89, 89);
+            font-size: 16px;
         }
     }
 
@@ -43,8 +44,6 @@
     .formSearch {
         width: 860px;
         justify-content: space-between;
-        // margin: 0 auto 64px;
-
 
         .formRight {
             width: 394px;

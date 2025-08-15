@@ -3,7 +3,7 @@ import './search.scss';
 import documents from './images/Document.svg';
 import folders from './images/Folders.svg';
 import searchImage from './images/searchImage.svg';
-import FormSearch from './form_search/FormSearch';
+import SearchForm from './search-form/SearchForm';
 
 
 function Search () {
@@ -22,7 +22,7 @@ function Search () {
                 </div>
             </section>
             <section className='section2'>
-                <FormSearch/>
+                <SearchForm/>
                 <div className='contentRight'>
                     <img src={searchImage} alt="Изображение" width={442} className='imgRight'/>
                 </div>

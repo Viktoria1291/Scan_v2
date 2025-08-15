@@ -1,17 +1,18 @@
 import React from 'react';
-import './FormSearch.scss';
-import infoCircle from '../../authorization/form_authorization/Input/images/info-circle.svg';
-import Input from '../../authorization/form_authorization/Input/Input';
-import Button from '../../authorization/form_authorization/Button/Button';
-import Checkbox from './Checkbox/Checkbox';
+import './search-form.scss';
+import infoCircle from '../../authorization/auth-form/Input/images/info-circle.svg';
+import Input from '../../authorization/auth-form/Input/Input';
+import Button from '../../authorization/auth-form/Button/Button';
+import Checkbox from './checkbox/Checkbox';
 import axios from 'axios';
-import {useNavigate} from "react-router-dom";
-import {useSelector, useDispatch} from 'react-redux';
-import {addHistogram, addSearchResultItem, addScanDoc, removeObjectSearch} from '../../../store/actions';
+import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from 'react-redux';
+import { addHistogram, addSearchResultItem, addScanDoc, removeObjectSearch } from '../../../store/search.actions';
+import { getResponseAccountSettings } from '../../../store/search.actions';
 
 
 
-function FormSearch () {
+function SearchForm() {
     // записываем в стейт все значения инпутов 
     const [form, setForm] = React.useState({
         inn: '',
@@ -39,11 +40,14 @@ function FormSearch () {
     // еще один стейт - сообщение ошибки запроса
     const [errorReq, setErrorReq] = React.useState('');
 
+    // состояние для индикатора загрузки
+    const [isLoading, setIsLoading] = React.useState(false);
+
 
     // на этапе монтирования обращаемся в localStorage за предыдущими значениями инпутов 
     React.useEffect(() => {
         let lastINN = JSON.parse(localStorage.getItem('lastINN'));
-        if (lastINN) {setForm({...form, inn: lastINN})}
+        if (lastINN) { setForm({ ...form, inn: lastINN }) }
     }, [])
 
     // после изменения стейта form записываем в localStorage обновленный стейт
@@ -62,6 +66,8 @@ function FormSearch () {
     // достаем из стора токен
     const token = useSelector(state => state.loginReduсer.token);
 
+    const accountSettings = useSelector(state => state.loginReduсer.accountSettings);
+
     // создаем реф для инпута type=date, чтобы проверить не изменился ли тип
     let inputDate = React.createRef();
 
@@ -72,27 +78,26 @@ function FormSearch () {
     let invalidMessage = (!form.period.invalidBegin && !form.period.invalidEnd) ? '' : (!form.period.invalidBegin && form.period.invalidEnd) ? form.period.invalidEnd : (form.period.invalidBegin && !form.period.invalidEnd) ? form.period.invalidBegin : form.period.invalidEnd;
 
     // проверяем заполнение инпутов и отсутствие ошибок в форме
-    let isFormSearchFull = form.inn && form.limit && form.period.beginDate && form.period.endDate && !form.period.invalidBegin && !form.period.invalidEnd ? true : false;
+    let isSearchFormFull = form.inn && form.limit && form.period.beginDate && form.period.endDate && !form.period.invalidBegin && !form.period.invalidEnd ? true : false;
 
     // функция валидации
+    // Новая версия функции validate без проверки ИНН
     const validate = (id, value) => {
-        const regExpINN = /^\d{10}$/;
-
-        // для формата dd.mm.yyyy dd.mm.yy
+        // Удалена проверка ИНН, так как она теперь обрабатывается отдельно
         const regExpDate = /^(?:(?:31(\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\.)(?:0?[13-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/;
 
-        // если значения соответствуют регулярным выражениям - записываем их в стейт
-        if (id === 'searchINN') {
-            if (regExpINN.test(value)) {setForm({...form, inn: value})} 
-            else {setForm({...form, inn: ''})}
-            return regExpINN.test(value);
-        } else if (id === 'searchLimit') {
-            if (+value > 0 && +value <= 1000) {setForm({...form, limit: value})} 
-            else {setForm({...form, limit: null})}
-            return +value > 0 && +value <= 1000;
+        if (id === 'searchLimit') {
+            if (+value > 0 && +value <= 1000) {
+                setForm({ ...form, limit: value });
+                return true;
+            } else {
+                setForm({ ...form, limit: null });
+                return false;
+            }
         } else if (id === 'begin' || id === 'end') {
             return regExpDate.test(value);
         }
+        return true; // Добавлено возвращение true по умолчанию
     }
 
     // функция проверки дат. Если даты в будущем времени или конечная дата раньше начальной - записываем в стейт ошибку
@@ -100,7 +105,7 @@ function FormSearch () {
         // проверки полей даты:
         // 1. проверка не пустое ли поле
         if (!value) {
-            setForm({...form, period: {...form.period, invalid: 'Это поле не может быть пустым'}})
+            setForm({ ...form, period: { ...form.period, invalid: 'Это поле не может быть пустым' } })
         } else {
             let errorMessage = '';
 
@@ -139,30 +144,30 @@ function FormSearch () {
 
             // запись в стейт 
             if (name === 'begin') {
-                setForm({...form, period: {...form.period, beginDate: value, invalidBegin: errorMessage}});
+                setForm({ ...form, period: { ...form.period, beginDate: value, invalidBegin: errorMessage } });
             } else {
-                setForm({...form, period: {...form.period, endDate: value, invalidEnd: errorMessage}});
+                setForm({ ...form, period: { ...form.period, endDate: value, invalidEnd: errorMessage } });
             }
         }
     }
 
     // проверяем чистоту инпута
-    const handleBlur = () => {setForm({...form, period: {...form.period, touched: true}})}
+    const handleBlur = () => { setForm({ ...form, period: { ...form.period, touched: true } }) }
 
     // передаем значение чекбоксов в стейт
     const handleChecked = (e, id) => {
-        if (id === 'totalDocuments') {setForm({...form, histogramTypes: {...form.histogramTypes, totalDocuments: e}})}
-        else if (id === 'inBusinessNews') {setForm({...form, inBusinessNews: e})}
-        else if (id === 'onlyMainRole') {setForm({...form, onlyMainRole: e})}
-        else if (id === 'onlyWithRiskFactors') {setForm({...form, histogramTypes: {...form.histogramTypes, riskFactors: e}})}
-        else if (id === 'excludeTechNews') {setForm({...form, technicalNews: e})}
-        else if (id === 'excludeAnnouncements') {setForm({...form, announceСalendars: e})}
-        else if (id === 'excludeDigests') {setForm({...form, newsBulletins: e})}
+        if (id === 'totalDocuments') { setForm({ ...form, histogramTypes: { ...form.histogramTypes, totalDocuments: e } }) }
+        else if (id === 'inBusinessNews') { setForm({ ...form, inBusinessNews: e }) }
+        else if (id === 'onlyMainRole') { setForm({ ...form, onlyMainRole: e }) }
+        else if (id === 'onlyWithRiskFactors') { setForm({ ...form, histogramTypes: { ...form.histogramTypes, riskFactors: e } }) }
+        else if (id === 'excludeTechNews') { setForm({ ...form, technicalNews: e }) }
+        else if (id === 'excludeAnnouncements') { setForm({ ...form, announceСalendars: e }) }
+        else if (id === 'excludeDigests') { setForm({ ...form, newsBulletins: e }) }
     }
 
     // передаем в стейт значение селекта 
     const handleSelect = (value) => {
-        setForm({...form, tonality: value})
+        setForm({ ...form, tonality: value })
     }
 
     // текст подсказок для соответствующих инпутов
@@ -171,156 +176,208 @@ function FormSearch () {
     const validNum = 'Количество документов в выдаче должно быть в диапазоне от 1 до 1000. Допускаются только цифры.';
     const validDate = 'Даты вводятся в формате ДД.ММ.ГГГГ (разделителем служит точка)';
 
-    
+
     // функция отправки запроса
     const sendRequest = (event) => {
-        // перед началом запроса убедимся в авторизации
-        if (!token) {
-            setErrorReq('Вы не авторизованы!');
+        event.preventDefault();
+        setIsLoading(true);
+
+        // Проверка лимита
+        if (accountSettings && accountSettings.eventFiltersInfo.companyLimit <= 0) {
+            setErrorReq('Лимит запросов исчерпан');
+            setIsLoading(false);
             return;
         }
 
-        // перед началом запроса обнулим ошибки в стейте и данные предыдущих запросов в сторе
+        // Проверка авторизации
+        if (!token) {
+            setErrorReq('Вы не авторизованы!');
+            setIsLoading(false);
+            return;
+        }
+
         setErrorReq('');
         dispatch(removeObjectSearch());
 
+        // Получаем историю поиска из localStorage
+        const searchHistory = JSON.parse(localStorage.getItem('searchHistory')) || {};
+        const currentINN = form.inn;
+        const isNewSearch = !searchHistory[currentINN]; // Проверяем, новый ли это ИНН
+
         // данные запроса
         const data = {
-            "issueDateInterval": {
-                "startDate": new Date(form.period.beginDate),
-                "endDate": new Date(form.period.endDate)
+            issueDateInterval: {
+                startDate: form.period.beginDate,
+                endDate: form.period.endDate
             },
-            "searchContext": {
-                "targetSearchEntitiesContext": {
-                    "targetSearchEntities": [
+            searchContext: {
+                targetSearchEntitiesContext: {
+                    targetSearchEntities: [
                         {
-                            "type": "company",
-                            "sparkId": null,
-                            "entityId": null,
-                            "inn": form.inn,
-                            "maxFullness": true,
-                            "inBusinessNews": form.inBusinessNews
+                            type: "company",
+                            sparkId: null,
+                            entityId: null,
+                            inn: form.inn,
+                            maxFullness: form.histogramTypes.totalDocuments,
+                            inBusinessNews: form.inBusinessNews
                         }
                     ],
-                    "onlyMainRole": form.onlyMainRole,
-                    "tonality": form.tonality,
-                    "onlyWithRiskFactors": form.onlyWithRiskFactors,
-                    "riskFactors": {
-                        "and": [],
-                        "or": [],
-                        "not": []
+                    onlyMainRole: form.onlyMainRole,
+                    tonality: form.tonality,
+                    onlyWithRiskFactors: form.onlyWithRiskFactors,
+                    riskFactors: {
+                        and: [],
+                        or: [],
+                        not: []
                     },
-                    "themes": {
-                        "and": [],
-                        "or": [],
-                        "not": []
+                    themes: {
+                        and: [],
+                        or: [],
+                        not: []
                     }
                 },
-                "themesFilter": {
-                    "and": [],
-                    "or": [],
-                    "not": []
+                themesFilter: {
+                    and: [],
+                    or: [],
+                    not: []
                 }
             },
-            "searchArea": {
-                "includedSources": [],
-                "excludedSources": [],
-                "includedSourceGroups": [],
-                "excludedSourceGroups": []
+            searchArea: {
+                includedSources: [],
+                excludedSources: [],
+                includedSourceGroups: [],
+                excludedSourceGroups: []
             },
-            "attributeFilters": {
-                "excludeTechNews": form.excludeTechNews,
-                "excludeAnnouncements": form.excludeAnnouncements,
-                "excludeDigests": form.excludeDigests
+            attributeFilters: {
+                excludeTechNews: form.excludeTechNews,
+                excludeAnnouncements: form.excludeAnnouncements,
+                excludeDigests: form.excludeDigests
             },
-            "similarMode": "duplicates",
-            "limit": form.limit,
-            "sortType": "sourceInfluence",
-            "sortDirectionType": "desc",
-            "intervalType": "month",
-            "histogramTypes": [
+            similarMode: "duplicates",
+            limit: form.limit,
+            sortType: "sourceInfluence",
+            sortDirectionType: "desc",
+            intervalType: "month",
+            histogramTypes: [
                 "totalDocuments",
                 "riskFactors"
             ]
-        }
+        };
 
-        // создание экземпляра
         const instance = axios.create({
             baseURL: 'https://gateway.scan-interfax.ru/api/v1'
         });
 
-
-
         instance.interceptors.request.use(config => {
             config.headers.Authorization = `Bearer ${token.accessToken}`;
             return config;
-        })
+        });
 
-        // запрос на гистограмму
-        instance
-            .post('/objectsearch/histograms', data)
-            .then(result => {
-                if (result.status === 200) {
-                    dispatch(addHistogram(result.data.data));
-                    console.log('запрос на гистограмму: ' + result.status)
-                    // запрос на ids 
-                    instance
-                        .post('/objectsearch', data)
-                        .then(result => {
-                            if (result.status === 200) {
-                                dispatch(addSearchResultItem(result.data.items));
-                                console.log('запрос на IDS: ' + result.status);
-                                let arrIDS = [];
-                                for (let i = 0; i < 100 && i < result.data.items.length; i++) {
-                                    arrIDS.push(result.data.items[i].encodedId)
-                                }
-                                // запрос скандок
-                                instance
-                                    .post('/documents', {ids: arrIDS})
-                                    .then(result => {
-                                        if (result.status === 200) {
-                                            dispatch(addScanDoc(result.data));
-                                            console.log('запрос на scanDoc: ' + result.status);
-                                        }
-                                    })
-                                    .catch(error => {console.log('запрос на scanDoc: ' + error.response.data.message)})
+        // Цепочка запросов с обработкой ошибок
+        instance.post('/objectsearch/histograms', data)
+            .then(histogramsResult => {
+                if (histogramsResult.status === 200) {
+                    dispatch(addHistogram(histogramsResult.data.data));
+                    return instance.post('/objectsearch', data);
+                }
+                throw new Error('Histogram request failed');
+            })
+            .then(searchResult => {
+                if (searchResult && searchResult.status === 200) {
+                    dispatch(addSearchResultItem(searchResult.data.items));
+
+                    const ids = searchResult.data.items
+                        .map(item => item.encodedId)
+                        .filter(Boolean);
+
+                    if (ids.length === 0) {
+                        throw new Error("No documents available");
+                    }
+
+                    // Обновляем счетчики только если это новый ИНН
+                    if (accountSettings && isNewSearch) {
+                        const prevUsedCount = accountSettings.eventFiltersInfo.usedCompanyCount;
+                        const prevCompanyLimit = accountSettings.eventFiltersInfo.companyLimit;
+
+                        const updatedSettings = {
+                            ...accountSettings,
+                            eventFiltersInfo: {
+                                ...accountSettings.eventFiltersInfo,
+                                usedCompanyCount: prevUsedCount + 1,
+                                companyLimit: prevCompanyLimit - 1
                             }
-                        })
-                        .catch(error => {console.log('запрос на IDS: ' + error.response.data.message)})
-                        
-                    // переадресация на страницу
-                    navigate("/objectsearch", {state:{data: null}});
+                        };
+                        dispatch(getResponseAccountSettings(updatedSettings));
+
+                        // Обновляем кеш в localStorage
+                        localStorage.setItem('cachedAccountSettings', JSON.stringify(updatedSettings));
+
+                        // Сохраняем информацию о поиске по этому ИНН
+                        searchHistory[currentINN] = true;
+                        localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
+                    }
+
+                    return instance.post('/documents', { ids });
+                }
+                throw new Error('Search request failed');
+            })
+            .then(docsResult => {
+                if (docsResult && docsResult.status === 200) {
+                    dispatch(addScanDoc(docsResult.data));
+                    navigate("/objectsearch", { state: { data: null } });
                 }
             })
             .catch(error => {
-                setErrorReq('запрос гистограммы: ' + error.response.data.message);
+                if (error.message === "No documents available") {
+                    setErrorReq("В базе нет данных для загрузки документов");
+                } else {
+                    console.error("Ошибка API:", error.response?.data);
+                    setErrorReq(
+                        error.response?.data?.message ||
+                        "Ошибка сервера. Проверьте введённые данные."
+                    );
+                }
+            })
+            .finally(() => {
+                setIsLoading(false);
             });
-
-        // блокирование нативного поведения form
-        event.preventDefault();
-    }
+    };
 
 
 
     return (
         <form action="" className='wrapperForm formSearch' onSubmit={sendRequest}>
             <div className='form formLeft'>
-                <Input
-                    name={'ИНН компании *'}
-                    type={"text"} 
-                    id={'searchINN'} 
-                    validate={validate}
-                    invalidValue={invalidField}
-                    placeholder={'10 цифр'}
-                    tooltip={validINN}
-                    defaultValue={form.inn} 
-                />
+
+                {/* Поле ИНН */}
+                <div className="wrapperInput">
+                    <div className='wrapperLabel'>
+                        <label htmlFor='searchINN' className='label'>ИНН компании *</label>
+                        <div className='question questionSearch' datatooltip={validINN}>
+                            <img src={infoCircle} alt="Подсказка" />
+                        </div>
+                    </div>
+                    <input
+                        type="text"
+                        id="searchINN"
+                        className="input inputSearch"
+                        value={form.inn}
+                        onChange={(e) => {
+                            const value = e.target.value;
+                            if (/^\d*$/.test(value) && value.length <= 10) {
+                                setForm({ ...form, inn: value });
+                            }
+                        }}
+                        placeholder="10 цифр"
+                    />
+                    <div className='wrapperError'></div>
+                </div>
 
                 <div className="wrapperInput">
                     <div className='wrapperLabel'>
                         <label htmlFor='tonality' className='label'>Тональность</label>
                     </div>
-                    
+
                     <select name="" id="" className='input inputSearch' value={form.tonality} onChange={e => handleSelect(e.target.value)}>
                         <option className='option' value='positive'>Позитивная</option>
                         <option className='option' value='negative' >Негативная</option>
@@ -329,17 +386,16 @@ function FormSearch () {
                     <div className='wrapperError wrapperErrorSearch'></div>
                 </div>
 
-
-
                 <Input
                     name={'Количество документов в выдаче *'}
-                    type={"number"} 
-                    id={'searchLimit'} 
+                    type={"number"}
+                    id={'searchLimit'}
                     validate={validate}
                     invalidValue={invalidField}
                     placeholder={'от 1 до 1000'}
-                    tooltip={validNum} 
-                    defaultValue={form.limit}
+                    tooltip={validNum}
+                    value={form.limit || ''}
+                    onChange={(e) => setForm({ ...form, limit: e.target.value })}
                 />
 
                 <div className="wrapperInput">
@@ -347,35 +403,35 @@ function FormSearch () {
                         <label htmlFor='period' className='label'>Диапазон поиска *</label>
 
                         <div className='question questionSearch questionDate' datatooltip={validDate}>
-                            <img src={infoCircle} alt="Подсказка"/>
+                            <img src={infoCircle} alt="Подсказка" />
                         </div>
                     </div>
 
-                    <input 
+                    <input
                         ref={inputDate}
-                        type='date' 
+                        type='date'
                         id='period'
-                        className={`input inputSearch inputDate ${form.period.touched && invalidMessage ? 'inputInvalid' : ''}`} 
+                        className={`input inputSearch inputDate ${form.period.touched && invalidMessage ? 'inputInvalid' : ''}`}
                         onChange={(e) => handleDate('begin', e.target.value)}
-                        onBlur={(e) => handleBlur()} 
-                        placeholder='Дата начала' 
+                        onBlur={(e) => handleBlur()}
+                        placeholder='Дата начала'
                         max={today}
-                        defaultValue={new Date(form.period.beginDate)}
+                        value={form.period.beginDate}
                     />
-                    <input 
-                        type='date' 
+                    <input
+                        type='date'
                         id='period'
-                        className={`input inputSearch inputDate ${form.period.touched && invalidMessage ? 'inputInvalid' : ''}`} 
+                        className={`input inputSearch inputDate ${form.period.touched && invalidMessage ? 'inputInvalid' : ''}`}
                         onChange={(e) => handleDate('end', e.target.value)}
-                        onBlur={(e) => handleBlur()} 
-                        placeholder='Дата конца' 
+                        onBlur={(e) => handleBlur()}
+                        placeholder='Дата конца'
                         max={today}
-                        defaultValue={new Date(form.period.beginDate)}
+                        value={form.period.endDate}
                     />
 
                     <div className='wrapperError wrapperErrorSearch wrapperErrorSearchDate'>
-                        {(form.period.touched && invalidMessage) && 
-                        <span className='errorMessage'>{invalidMessage}</span>}
+                        {(form.period.touched && invalidMessage) &&
+                            <span className='errorMessage'>{invalidMessage}</span>}
                     </div>
                 </div>
 
@@ -432,16 +488,16 @@ function FormSearch () {
                 <div className='wrapperButton'>
                     <div className='errorReq'>{errorReq}</div>
                     <Button
-                        type={'submit'} 
+                        type={'submit'}
                         name={'Search'}
-                        value={'Поиск'}
-                        disabled={!isFormSearchFull}
+                        value={isLoading ? 'Поиск...' : 'Поиск'}
+                        disabled={!isSearchFormFull || isLoading}
                     />
                     <p className='footnote'>* Обязательные к заполнению поля</p>
-                </div>   
-            </div> 
+                </div>
+            </div>
         </form>
     )
 }
 
-export default FormSearch;
+export default SearchForm;

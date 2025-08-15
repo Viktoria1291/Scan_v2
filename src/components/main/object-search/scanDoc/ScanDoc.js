@@ -1,5 +1,5 @@
 import React from 'react';
-import './ScanDoc.scss';
+import './scan-doc.scss';
 import noImage from './images/noimage.png';
 import DOMPurify from 'dompurify';
 import {connect} from 'react-redux';

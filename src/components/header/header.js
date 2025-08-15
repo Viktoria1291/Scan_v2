@@ -9,8 +9,9 @@ import burger from './images/burger.svg';
 
 import {Link, useNavigate} from 'react-router-dom';
 import {useSelector, useDispatch} from 'react-redux';
-import {displayAuthorization, getResponseAccountSettings, getErrorAccountSettings, logOutAccount} from '../store/actions';
+import {displayAuthorization, getResponseAccountSettings, getErrorAccountSettings, logOutAccount} from '../store/search.actions';
 
+import ScrollToTopLink from '../ScrollToTopLink';
 
 
 function Header() {
@@ -52,8 +53,15 @@ function Header() {
         }
     }, [])
 
-    // функция запроса лимитов аккаунта через FETCH
-    const sendRequestAccountSettings = () => {
+    // Функция запроса лимитов аккаунта через FETCH
+    const sendRequestAccountSettings = React.useCallback(() => {
+        // Запрашиваем данные только если их нет в localStorage
+        const cachedAccountSettings = localStorage.getItem('cachedAccountSettings');
+        if (cachedAccountSettings) {
+            dispatch(getResponseAccountSettings(JSON.parse(cachedAccountSettings)));
+            return;
+        }
+
         const url = `https://gateway.scan-interfax.ru/api/v1/account/info`;
 
         const options = {
@@ -66,30 +74,34 @@ function Header() {
         }
 
         fetch(url, options)
-            .then(response => {
-                let result = response.json();
-                return result;
-            })
+            .then(response => response.json())
             .then(result => {
                 if (result.eventFiltersInfo) {
+                    // Сохраняем данные в localStorage
+                    localStorage.setItem('cachedAccountSettings', JSON.stringify(result));
                     dispatch(getResponseAccountSettings(result));
                 } else {
                     dispatch(getErrorAccountSettings(result));
                 }
-                return result;
             })
             .catch(() => {
                 dispatch(getErrorAccountSettings({errorCode: '', message: 'Ошибка запроса'}));
             })
-    }
+    }, [token, dispatch]);
 
-    // выход из аккаунта
+    // Выход из аккаунта
     const handleExit = () => {
-        dispatch(logOutAccount())
+        dispatch(logOutAccount());
+        localStorage.removeItem('searchHistory');
+        localStorage.removeItem('cachedAccountSettings'); // Очищаем кеш лимитов
     }
 
-    // если есть токен и нет лимита аккаунта - запускаем функцию запроса лимита аккаунта
-    if (token && !accountSettings) {sendRequestAccountSettings()};
+    // Запрашиваем данные аккаунта только при наличии токена и отсутствии данных
+    React.useEffect(() => {
+        if (token && !accountSettings) {
+            sendRequestAccountSettings();
+        }
+    }, [token, accountSettings, sendRequestAccountSettings]);
 
 
     return (
@@ -97,19 +109,21 @@ function Header() {
             <div className='container'>
                 <div className='header'>
                     <div className='itemHeader'>
-                        <img src={logo} alt="Логотип" width="141"/>
+                        <ScrollToTopLink to="/">
+                            <img src={logo} alt="Логотип" width="141" />
+                        </ScrollToTopLink>
                     </div>
 
                     <nav className='itemHeader nav'>
                         <ul className='ul'>
                             <li className='li'>
-                                <Link className='a' to="/">Главная</Link>
+                                <ScrollToTopLink className='a' to="/">Главная</ScrollToTopLink>
                             </li>
                             <li className='li'>
-                                <Link className='a' to="#">Тарифы</Link>
+                                <ScrollToTopLink className='a' to="#tariffs">Тарифы</ScrollToTopLink>
                             </li>
                             <li className='li'>
-                                <Link className='a' to="#">FAQ</Link>
+                                <ScrollToTopLink className='a' to="#faq">FAQ</ScrollToTopLink>
                             </li>
                         </ul>
                     </nav>
@@ -147,7 +161,7 @@ function Header() {
                     </div>
                     :
                     <div className='buttons itemHeader reg'>
-                        <button className='buttonHeader'>Зарегистрироваться</button>
+                        <Link to="/registration" className='buttonHeader'>Зарегистрироваться</Link>
                         <img className='rectangle' src={rectangle} alt="" />
                         <button className='buttonHeader' onClick={handleAuthorization}>Войти</button>
                     </div>
@@ -163,10 +177,10 @@ function Header() {
                                     <Link className='aBM' to="/">Главная</Link>
                                 </li>
                                 <li className='liBM'>
-                                    <Link className='aBM' to="#">Тарифы</Link>
+                                    <Link className='aBM' to="#tariffs">Тарифы</Link>
                                 </li>
                                 <li className='liBM'>
-                                    <Link className='aBM' to="#">FAQ</Link>
+                                    <Link className='aBM' to="#faq">FAQ</Link>
                                 </li>  
                                 </ul>
                             </nav>
@@ -181,7 +195,7 @@ function Header() {
                         <nav className='navBM'>
                             <ul className='ulBM'>
                                 <li className='liBM'>
-                                    <Link className='aBM' to="#">Зарегистрироваться</Link>
+                                    <Link className='aBM' to="/registration">Зарегистрироваться</Link>
                                 </li>
                                 <li className='liBM'>
                                     <Link className='aBM' to="/authorization">Войти</Link>

@@ -1,4 +1,5 @@
 @import '../../../App.scss';
+@import '../../header/header.scss';
 
 
 .home_section1 {
@@ -54,6 +55,9 @@
     margin: 105px 0 0;
 }
 
+#tariffs, #faq {
+  scroll-margin-top: calc(var(--header-height) + 60px);
+}
 
 @media screen and (max-width: 900px) {
     .home_section3 h2 {

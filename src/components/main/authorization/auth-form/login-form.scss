@@ -27,6 +27,13 @@
             border-bottom: 2px solid $prime_5;
             padding: 0 21px 8px;
             color: $prime_5;
+            text-decoration: none;
+            color: inherit;
+
+            &:hover {
+                color: #029491;
+                border-color: #029491;
+            }
         }
 
         .activeTab {
@@ -149,6 +156,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            cursor: pointer;
         }
     }
 }
