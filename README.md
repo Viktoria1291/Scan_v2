@@ -1,3 +1,6 @@
+Обновление лимита происходит только после выхода и повторного захода в аккаунт / другой аккаунт (не при обновлении страницы).
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
