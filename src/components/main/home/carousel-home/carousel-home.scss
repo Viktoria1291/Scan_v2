@@ -4,7 +4,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 70px 0;
+    margin: 60px 0;
     width: 100%;
 
     .arrow_carousel {
@@ -43,14 +43,14 @@
 
 
 
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 767px) {
     .wrapper_carousel {
-        margin: 32px 0 60px;        
-        .carousel {   
+        margin: 30px 0;
+
+        .carousel {
             .carousel_item {
                 min-width: calc(100% - 30px);
             }
         }
     }
 }
-

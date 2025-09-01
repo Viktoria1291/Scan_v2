@@ -4,15 +4,18 @@
 .hom_sec3_tariffs {
     display: flex;
     justify-content: space-between;
-    margin: 0 0 118px;
+    gap: 20px;
+    margin: 0 0 120px;
     font-size: 18px;
+    align-items: stretch;
 
     .current {
         border: 2px solid var(--background);
     }
 
     .tarif {
-        width: 32%;
+        flex: 1;
+        min-width: 280px;
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
         border-radius: 10px;
         overflow: hidden;
@@ -21,11 +24,13 @@
         transition: all 0.3s ease;
         position: relative;
         background: white;
+        display: flex;
+        flex-direction: column;
 
         &:hover {
             transform: translateY(-10px);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            
+
             .buttonTariff {
                 background-color: darken($supplemental_3, 10%);
                 transform: scale(1.02);
@@ -40,16 +45,20 @@
             display: flex;
             justify-content: space-between;
             color: var(--color);
-            background-color: var(--background);  
-            transition: background-color 0.3s ease;        
+            background-color: var(--background);
+            transition: background-color 0.3s ease;
+            min-height: 150px;
+            flex-shrink: 0;
 
             .title_text {
                 margin: 30px 0 34px 30px;
+                flex: 1;
             }
 
             .img {
                 margin: 11px 15px 0 0;
                 transition: transform 0.3s ease;
+                flex-shrink: 0;
             }
         }
 
@@ -62,6 +71,7 @@
             margin-top: 12px;
             display: flex;
             justify-content: right;
+            flex-shrink: 0;
 
             .badge {
                 color: #fff;
@@ -78,7 +88,8 @@
         }
 
         .text {
-            margin: 0 15px 0 30px;
+            margin: 0 30px;
+            flex-shrink: 0;
 
             .oldPrice {
                 opacity: 50%;
@@ -90,6 +101,7 @@
         .ul {
             padding: 0;
             margin-top: 59px;
+            flex-grow: 1;
 
             .ul_title {
                 font-size: 20px;
@@ -100,12 +112,13 @@
             .li {
                 list-style-type: none;
                 transition: transform 0.2s ease;
-                
+                margin-bottom: 8px;
+
                 &:hover {
                     transform: translateX(5px);
                 }
             }
-    
+
             .li:before {
                 content: url(images/greenСheckmark.png);
                 width: 20px;
@@ -129,14 +142,15 @@
             background-color: $supplemental_3;
             width: calc(100% - 60px);
             height: 59px;
-            margin: 55px 30px 24px;
+            margin: 25px 30px 25px;
             border: none;
             border-radius: 5px;
             color: $prime_3;
             font-size: 20px;
             cursor: pointer;
             transition: all 0.3s ease;
-            
+            flex-shrink: 0;
+
             &:hover {
                 box-shadow: 0 5px 15px rgba($supplemental_3, 0.4);
             }
@@ -149,21 +163,40 @@
     }
 }
 
-
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 1234px) {
     .hom_sec3_tariffs {
-        flex-direction: column;
-        margin: 0 0 43px;
+        flex-wrap: wrap; // Позволяет перенос на новую строку
+        justify-content: center; // Центрируем карточки
+        margin-top: 70px;
+        margin-bottom: 70px;
+        gap: 30px;
 
         .tarif {
-            width: 60%;
-            margin: 37px auto;
+            flex: 0 0 calc(50% - 20px); // 2 карточки в ряд
+
+            margin: 0;
+        }
+    }
+}
+
+
+@media screen and (max-width: 1020px) {
+    .hom_sec3_tariffs {
+        flex-direction: row;
+        flex-wrap: wrap;
+        margin: 70px 0 70px;
+        gap: 30px;
+
+        .tarif {
+            flex: 0 0 calc(50% - 15px);
+            margin: 0;
+            max-width: 100%;
 
             .title {
-                min-height: auto;
+                min-height: 150px;
 
                 .title_text {
-                    max-width: 300px;
+                    max-width: none;
                 }
             }
 
@@ -174,19 +207,21 @@
             .installment {
                 max-width: 400px;
             }
-
-            .buttonTariff {
-                margin: 35px 30px 24px;
-            }
         }
     }
 }
 
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 767px) {
     .hom_sec3_tariffs {
+        margin: 40px 0 40px;
+        flex-direction: column;
+        align-items: center;
+
         .tarif {
             width: 100%;
+            margin: 0;
+            flex: 0 0 auto;
 
             &:hover {
                 transform: translateY(-5px);
@@ -195,5 +230,33 @@
     }
 }
 
+@media screen and (max-width: 480px) {
+    .hom_sec3_tariffs {
+        .tarif {
+            margin: 0;
 
+            .title {
+                min-height: 120px;
+                flex-direction: column;
 
+                .title_text {
+                    margin: 20px;
+                }
+
+                .img {
+                    margin: 0 20px 20px auto;
+
+                }
+            }
+
+            .text {
+                margin: 0 20px;
+            }
+
+            .buttonTariff {
+                margin: 25px 20px;
+                width: calc(100% - 40px);
+            }
+        }
+    }
+}

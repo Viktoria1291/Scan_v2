@@ -2,7 +2,7 @@
 
 
 .objectSarch_section2 {
-    margin-top: 15px;
+    margin-top: 120px;
 
     .found {
         font-size: 18px;
@@ -56,7 +56,7 @@
             .columnResult:last-of-type {
                 border-right: none;
             }
-    
+
             .flow {
                 display: flex;
                 min-width: 100%;
@@ -72,36 +72,19 @@
     }
 }
 
-
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 767px) {
     .objectSarch_section2 {
+        margin-top: 40px;
+    }
+}
 
+@media screen and (max-width: 480px) {
+    .objectSarch_section2 {
         .wrapper_histograms {
-            display: flex;
-            align-items: center;
-    
             .histograms {
-                flex-direction: column;
-
-                .column {
-                    flex-direction: row;
-                }
-    
                 .columnNames {
-                    padding: 17px 0;
-                }
-    
-                .columnResult {
-                    min-width: 100%;
-                    align-items: center;
-                    border-right: none;
-                    font-size: 18px;
-                    height: auto;
-                }
-
-                .elemColumn {
-                    width: 33.33%;
-                    text-align: center;
+                    padding: 17px 10px;
+                    min-width: 90px;
                 }
             }
         }

@@ -7,12 +7,9 @@ import rectangle from './images/rectangle.svg';
 import spinner from './images/spinner.png';
 import burger from './images/burger.svg';
 
-import {Link, useNavigate} from 'react-router-dom';
-import {useSelector, useDispatch} from 'react-redux';
-import {displayAuthorization, getResponseAccountSettings, getErrorAccountSettings, logOutAccount} from '../store/search.actions';
-
-import ScrollToTopLink from '../ScrollToTopLink';
-
+import { Link, useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { displayAuthorization, getResponseAccountSettings, getErrorAccountSettings, logOutAccount } from '../store/search.actions';
 
 function Header() {
     // стейт нажато ли бургер меню
@@ -38,20 +35,19 @@ function Header() {
     }
 
     // функция скрытия БМ при нажатии вне БМ
-    // проверяем если нажато не само БМ, то скрываем БМ
-    const hideBurgerMenu = (e) => {
+    const hideBurgerMenu = React.useCallback((e) => {
         if (e.target.className !== 'burgerMenu' && clickedBM) {
             setClickedBM(false);
         }
-    }
+    }, [clickedBM]);
 
     // обработчик на клик по window для закрытия БМ
     React.useEffect(() => {
         document.addEventListener("click", hideBurgerMenu);
         return () => {
-          document.removeEventListener("click", hideBurgerMenu)
+            document.removeEventListener("click", hideBurgerMenu)
         }
-    }, [])
+    }, [hideBurgerMenu])
 
     // Функция запроса лимитов аккаунта через FETCH
     const sendRequestAccountSettings = React.useCallback(() => {
@@ -67,7 +63,7 @@ function Header() {
         const options = {
             method: 'GET',
             headers: {
-                "Content-type": "application/json", 
+                "Content-type": "application/json",
                 "Accept": "application/json",
                 'Authorization': `Bearer ${token.accessToken}`,
             }
@@ -85,7 +81,7 @@ function Header() {
                 }
             })
             .catch(() => {
-                dispatch(getErrorAccountSettings({errorCode: '', message: 'Ошибка запроса'}));
+                dispatch(getErrorAccountSettings({ errorCode: '', message: 'Ошибка запроса' }));
             })
     }, [token, dispatch]);
 
@@ -103,107 +99,167 @@ function Header() {
         }
     }, [token, accountSettings, sendRequestAccountSettings]);
 
+    // Функция для перехода на главную с прокруткой вверх
+    const handleMainPageClick = (e) => {
+        e.preventDefault();
+        setClickedBM(false);
+        navigate('/');
+        // Прокрутка вверх после небольшой задержки, чтобы страница успела загрузиться
+        setTimeout(() => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }, 50);
+    }
+
+    // Функция для обработки якорных ссылок
+    const handleAnchorClick = (e, anchorId) => {
+        e.preventDefault();
+        setClickedBM(false);
+
+        // Если мы не на главной странице, сначала переходим на главную
+        if (window.location.pathname !== '/') {
+            navigate('/');
+            // Ждем немного чтобы главная страница успела загрузиться
+            setTimeout(() => {
+                const element = document.getElementById(anchorId);
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                }
+            }, 100);
+        } else {
+            // Если уже на главной, просто скроллим к элементу
+            const element = document.getElementById(anchorId);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    }
+
+    // Функция для обычных ссылок (регистрация, авторизация)
+    const handleRegularLinkClick = (e, path) => {
+        e.preventDefault();
+        setClickedBM(false);
+        navigate(path);
+    }
+
 
     return (
         <header>
             <div className='container'>
                 <div className='header'>
                     <div className='itemHeader'>
-                        <ScrollToTopLink to="/">
+                        <Link to="/" onClick={() => window.scrollTo(0, 0)}>
                             <img src={logo} alt="Логотип" width="141" />
-                        </ScrollToTopLink>
+                        </Link>
                     </div>
 
                     <nav className='itemHeader nav'>
                         <ul className='ul'>
                             <li className='li'>
-                                <ScrollToTopLink className='a' to="/">Главная</ScrollToTopLink>
+                                <Link className='a' to="/" onClick={() => window.scrollTo(0, 0)}>Главная</Link>
                             </li>
                             <li className='li'>
-                                <ScrollToTopLink className='a' to="#tariffs">Тарифы</ScrollToTopLink>
+                                <button className='a anchor-button' onClick={(e) => handleAnchorClick(e, 'tariffs')}>
+                                    Тарифы
+                                </button>
                             </li>
                             <li className='li'>
-                                <ScrollToTopLink className='a' to="#faq">FAQ</ScrollToTopLink>
+                                <button className='a anchor-button' onClick={(e) => handleAnchorClick(e, 'faq')}>
+                                    FAQ
+                                </button>
                             </li>
                         </ul>
                     </nav>
 
-                    {token ? 
-                    <div className='itemHeader wrapperPersonalData '>
-                        <div className='accountSettings'>
-                            {accountSettings ?
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td className='propertyTite'>Использовано компаний</td>
-                                        <td className='propertyValue'>{accountSettings.eventFiltersInfo.usedCompanyCount}</td>
-                                    </tr>
-                                    <tr>
-                                        <td className='propertyTite'>Лимит по компаниям</td>
-                                        <td className='propertyValue limit'>{accountSettings.eventFiltersInfo.companyLimit}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            :
-                            <div className='spinner'><img src={spinner} alt="" /></div>
-                            }
-                        </div>
+                    {token ?
+                        <div className='itemHeader wrapperPersonalData '>
+                            <div className='accountSettings'>
+                                {accountSettings ?
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td className='propertyTite'>Использовано компаний</td>
+                                                <td className='propertyValue'>{accountSettings.eventFiltersInfo.usedCompanyCount}</td>
+                                            </tr>
+                                            <tr>
+                                                <td className='propertyTite'>Лимит по компаниям</td>
+                                                <td className='propertyValue limit'>{accountSettings.eventFiltersInfo.companyLimit}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    :
+                                    <div className='spinner'><img src={spinner} alt="Загрузка" />
+                                    </div>
+                                }
+                            </div>
 
-                        <div className='accountData'>
-                            <div className='name'>
-                                {userData.firstName.slice(0, 1).toUpperCase() + userData.firstName.slice(1).toLowerCase() + ' ' + userData.lastName.slice(0, 1).toUpperCase() + '.'}
-                                <p className='exit' onClick={handleExit}>Выйти</p>
-                            </div>
-                            <div className='avatar'>
-                                <img src={userData.avatar} alt="аватар" width='100%'/>
+                            <div className='accountData'>
+                                <div className='name'>
+                                    {userData.firstName.slice(0, 1).toUpperCase() + userData.firstName.slice(1).toLowerCase() + ' ' + userData.lastName.slice(0, 1).toUpperCase() + '.'}
+                                    <p className='exit' onClick={handleExit}>Выйти</p>
+                                </div>
+                                <div className='avatar'>
+                                    <img src={userData.avatar} alt="Аватар пользователя" width='100%' />
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    :
-                    <div className='buttons itemHeader reg'>
-                        <Link to="/registration" className='buttonHeader'>Зарегистрироваться</Link>
-                        <img className='rectangle' src={rectangle} alt="" />
-                        <button className='buttonHeader' onClick={handleAuthorization}>Войти</button>
-                    </div>
+                        :
+                        <div className='buttons itemHeader reg'>
+                            <Link to="/registration" className='buttonHeader' onClick={() => window.scrollTo(0, 0)}>Зарегистрироваться</Link>
+                            <img className='rectangle' src={rectangle} alt="" />
+                            <button className='buttonHeader' onClick={handleAuthorization}>Войти</button>
+                        </div>
                     }
 
-                    <img className='burgerMenu' src={burger} onClick={handleBurgerMenu}/>
-                    
-                    {clickedBM && 
-                    <div className='dropDown'>
-                        <nav className='navBM'>
-                            <ul className='ulBM'>
-                                <li className='liBM'>
-                                    <Link className='aBM' to="/">Главная</Link>
-                                </li>
-                                <li className='liBM'>
-                                    <Link className='aBM' to="#tariffs">Тарифы</Link>
-                                </li>
-                                <li className='liBM'>
-                                    <Link className='aBM' to="#faq">FAQ</Link>
-                                </li>  
+                    <img className='burgerMenu' src={burger} alt="Меню" onClick={handleBurgerMenu} />
+
+                    {clickedBM &&
+                        <div className='dropDown'>
+                            <nav className='navBM'>
+                                <ul className='ulBM'>
+                                    <li className='liBM'>
+                                        <button className='aBM' onClick={handleMainPageClick}>
+                                            Главная
+                                        </button>
+                                    </li>
+                                    <li className='liBM'>
+                                        <button className='aBM' onClick={(e) => handleAnchorClick(e, 'tariffs')}>
+                                            Тарифы
+                                        </button>
+                                    </li>
+                                    <li className='liBM'>
+                                        <button className='aBM' onClick={(e) => handleAnchorClick(e, 'faq')}>
+                                            FAQ
+                                        </button>
+                                    </li>
                                 </ul>
                             </nav>
 
-                        {token ?
-                        <div className='accountDataBM'>
-                            <br></br>
-                            {userData.firstName.slice(0, 1).toUpperCase() + userData.firstName.slice(1).toLowerCase() + ' ' + userData.lastName.slice(0, 1).toUpperCase() + '.'}
-                            <p className='exit' onClick={handleExit}>Выйти</p>
+                            {token ?
+                                <div className='accountDataBM'>
+                                    <br></br>
+                                    {userData.firstName.slice(0, 1).toUpperCase() + userData.firstName.slice(1).toLowerCase() + ' ' + userData.lastName.slice(0, 1).toUpperCase() + '.'}
+                                    <p className='exit' onClick={handleExit}>Выйти</p>
+                                </div>
+                                :
+                                <nav className='navBM'>
+                                    <ul className='ulBM'>
+                                        <li className='liBM'>
+                                            <button className='aBM' onClick={(e) => handleRegularLinkClick(e, '/registration')}>
+                                                Зарегистрироваться
+                                            </button>
+                                        </li>
+                                        <li className='liBM'>
+                                            <button className='aBM' onClick={(e) => handleRegularLinkClick(e, '/authorization')}>
+                                                Войти
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            }
                         </div>
-                        :
-                        <nav className='navBM'>
-                            <ul className='ulBM'>
-                                <li className='liBM'>
-                                    <Link className='aBM' to="/registration">Зарегистрироваться</Link>
-                                </li>
-                                <li className='liBM'>
-                                    <Link className='aBM' to="/authorization">Войти</Link>
-                                </li>
-                            </ul>        
-                        </nav>
-                        }
-                    </div>
                     }
                 </div>
             </div>

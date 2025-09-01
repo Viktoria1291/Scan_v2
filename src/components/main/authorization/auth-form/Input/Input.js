@@ -3,11 +3,11 @@ import './input.scss';
 import eye_not_visible from './images/eye_not_visible.svg';
 import eye_visible from './images/eye_visible.svg';
 import infoCircle from './images/info-circle.svg';
-import {useSelector, useDispatch} from 'react-redux';
-import {showHidePassword} from '../../../../store/search.actions';
+import { useSelector, useDispatch } from 'react-redux';
+import { showHidePassword } from '../../../../store/search.actions';
 
 
-function Input ({name, type, id, validate, invalidValue, placeholder, tooltip, value}) {
+function Input({ name, type, id, validate, invalidValue, placeholder, tooltip, value }) {
 
     const [touched, setTouched] = React.useState(false);
     const [invalid, setInvalid] = React.useState('');
@@ -29,42 +29,42 @@ function Input ({name, type, id, validate, invalidValue, placeholder, tooltip, v
             setInvalid('Введите корректные данные');
             validate(id, value);
         }
-        else if (validate(id, value)) {setInvalid('')}
-        else {setInvalid(invalidValue)}
+        else if (validate(id, value)) { setInvalid('') }
+        else { setInvalid(invalidValue) }
     }
 
-    const handleBlur = () => {setTouched(true)}
+    const handleBlur = () => { setTouched(true) }
 
-    const clickEyePas = () => {dispatch(showHidePassword())}
+    const clickEyePas = () => { dispatch(showHidePassword()) }
 
 
     return (
-        <div 
+        <div
             className={`wrapperInput ${id.includes('search') ? 'wrapperInputSearch' : ''}`}
         >
             <div className='wrapperLabel'>
                 <label htmlFor={id} className='label'>{name}</label>
-                {tooltip && 
-                <div className={`question ${id.includes('search') ? 'questionSearch' : ''}`} datatooltip={tooltip}>
-                    <img src={infoCircle} alt="Подсказка"/>
-                </div>
+                {tooltip &&
+                    <div className={`question ${id.includes('search') ? 'questionSearch' : ''}`} datatooltip={tooltip}>
+                        <img src={infoCircle} alt="Подсказка" />
+                    </div>
                 }
             </div>
-            
-            <input 
-                type={type} 
-                id={id} 
+
+            <input
+                type={type}
+                id={id}
                 className={`input ${(invalid && id !== 'passwordAut') ? 'inputInvalid' : ''} ${id.includes('search') ? 'inputSearch' : ''}`}
                 onChange={(e) => handleChange(e.target.value)}
-                onBlur={(e) => handleBlur()} 
-                placeholder={placeholder} 
+                onBlur={(e) => handleBlur()}
+                placeholder={placeholder}
                 value={inputValue}
             />
             <div className={`wrapperError ${id.includes('search') ? 'wrapperErrorSearch' : ''}`}>
-                {(touched && invalid) && 
-                <span className={`errorMessage ${id === 'passwordAut' ? 'errorPassAut' : ''}`}>{invalid}</span>}
+                {(touched && invalid) &&
+                    <span className={`errorMessage ${id === 'passwordAut' ? 'errorPassAut' : ''}`}>{invalid}</span>}
             </div>
-            {id.includes('assword') && <img src={passwordVisible ? eye_visible : eye_not_visible} alt="" className='eye' onMouseOver={clickEyePas} onMouseOut={clickEyePas}/>}
+            {id.includes('assword') && <img src={passwordVisible ? eye_visible : eye_not_visible} alt="" className='eye' onMouseOver={clickEyePas} onMouseOut={clickEyePas} />}
         </div>
     )
 }

@@ -5,10 +5,8 @@ import Carousel_home from './carousel-home/CarouselHome';
 import Tarrifs from './tariffs/Tariffs';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-
 
 function Home() {
 

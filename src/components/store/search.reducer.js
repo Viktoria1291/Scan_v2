@@ -1,4 +1,4 @@
-import {ACTIONS} from './search.actions';
+import { ACTIONS } from './search.actions';
 
 
 const initialState = {
@@ -8,7 +8,7 @@ const initialState = {
 }
 
 const objectSearchReducer = (state = initialState, action) => {
-    switch(action.type) {
+    switch (action.type) {
 
         case ACTIONS.ADD_HISTOGRAM:
             return {
@@ -27,7 +27,7 @@ const objectSearchReducer = (state = initialState, action) => {
                 ...state,
                 scanDoc: action.data,
             }
-            
+
         case ACTIONS.REMOVE_OBJECT_SEARCH:
             return {
                 histograms: null,

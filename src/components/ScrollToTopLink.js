@@ -8,7 +8,7 @@ const ScrollToTopLink = ({ children, to, ...props }) => {
     // Если это якорная ссылка (начинается с #)
     if (to.startsWith('#')) {
       e.preventDefault();
-      
+
       // Если мы уже на главной странице
       if (window.location.pathname === '/') {
         const element = document.querySelector(to);

@@ -3,8 +3,6 @@ import logo from './images/logo_footer.png';
 import './footer.scss';
 import '../../App.scss';
 
-import {Link, useNavigate} from 'react-router-dom';
-
 import ScrollToTopLink from '../ScrollToTopLink';
 
 function Footer() {
@@ -19,11 +17,11 @@ function Footer() {
                     </div>
                     <div className='wrapper_contacts'>
                         <div className='contacts'>
-                            г. Москва, Цветной б-р, 40 <br/>
-                            +7 495 771 21 11 <br/>
+                            г. Москва, Цветной б-р, 40 <br />
+                            +7 495 771 21 11 <br />
                             info@skan.ru
                         </div>
-                        <div className='copyright'>Copyright. 2022</div>
+                        <div className='copyright'>Copyright 2025 * Viktoria Roz</div>
                     </div>
                 </div>
             </div>

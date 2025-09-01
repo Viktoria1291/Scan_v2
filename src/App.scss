@@ -22,7 +22,8 @@ $supplemental_3: #5970FF;
 }
 
 body {
-  min-width: 1440px;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 .root {
@@ -36,9 +37,8 @@ main {
 }
 
 .container {
-  max-width: 1360px;
-  margin: 0 auto;
-  padding: 0 20px;
+  width: min(1360px, 100% - 40px);
+  margin-inline: auto;
 }
 
 .h {
@@ -73,10 +73,21 @@ main {
 }
 
 @keyframes rotate {
-  0% {transform: rotate(0deg);}
-  40% {transform: rotate(180deg);}
-  60% {transform: rotate(220deg);}
-  100% {transform: rotate(360deg);}
+  0% {
+    transform: rotate(0deg);
+  }
+
+  40% {
+    transform: rotate(180deg);
+  }
+
+  60% {
+    transform: rotate(220deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .spinner img {
@@ -86,15 +97,7 @@ main {
 }
 
 
-@media screen and (max-width: 900px) {
-  body {
-    min-width: 900px;
-  }
-
-  .container {
-    min-width: 900px;
-  }
-
+@media screen and (max-width: 1020px) {
   .h1 {
     font-size: 40px;
   }
@@ -113,16 +116,10 @@ main {
 }
 
 
-@media screen and (max-width: 600px) {
-  body {
-    min-width: 500px;
-  }
+@media screen and (max-width: 767px) {
 
-  .container {
-    min-width: 500px;
-  }
-
-  .h1, .h2 {
+  .h1,
+  .h2 {
     font-size: 28px;
   }
 

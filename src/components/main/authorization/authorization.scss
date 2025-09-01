@@ -24,13 +24,12 @@
     }
 }
 
-
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 767px) {
     .wrapper {
         display: block;
         margin: 31px auto 80px;
         text-align: center;
-    
+
         .contentLeft {
             width: 100%;
             text-align: left;
@@ -39,12 +38,19 @@
                 display: none;
             }
         }
-    
+
         .authorizationImage700 {
             display: block;
-            max-width: 322px;
+            max-width: 320px;
             margin: 49px auto 0;
         }
     }
 }
 
+@media screen and (max-width: 360px) {
+    .wrapper {
+        .authorizationImage700 {
+            max-width: 280px;
+        }
+    }
+}

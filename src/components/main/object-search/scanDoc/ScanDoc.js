@@ -2,13 +2,13 @@ import React from 'react';
 import './scan-doc.scss';
 import noImage from './images/noimage.png';
 import DOMPurify from 'dompurify';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 
-class ScanDoc extends React.Component{
+class ScanDoc extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {visible: this.props.index < this.props.visibleInd}
+        this.state = { visible: this.props.index < this.props.visibleInd }
     }
 
     // функция для обрезки url до основного
@@ -59,22 +59,22 @@ class ScanDoc extends React.Component{
             return 'слов';
         } else {
             count %= 10;
-            if (count === 1) {return 'слово'}
-            else if (count >= 2 && count <= 4) {return 'слова'}
-            else {return 'слов'}
+            if (count === 1) { return 'слово' }
+            else if (count >= 2 && count <= 4) { return 'слова' }
+            else { return 'слов' }
         }
     }
 
 
 
     componentDidUpdate(prevProps, prevState) {
-        if(this.props !== prevProps) {this.setState({visible: this.props.index < this.props.visibleInd})}
+        if (this.props !== prevProps) { this.setState({ visible: this.props.index < this.props.visibleInd }) }
     }
 
 
     render() {
-        const {item} = this.props;
-        const {visible} = this.state;
+        const { item } = this.props;
+        const { visible } = this.state;
 
 
         if (visible) {
@@ -89,30 +89,31 @@ class ScanDoc extends React.Component{
                             {item.ok.attributes.isAnnouncement && <div className='beidg'>Анонсы и календари</div>}
                             {item.ok.attributes.isDigest && <div className='beidg'>Сводки новостей</div>}
                         </div>
-                        <div 
-                            className='imgDoc' 
+                        <div
+                            className='imgDoc'
                             style={
-                                {'backgroundImage': `url(${this.getUrlImg(item.ok.content.markup) ? this.getUrlImg(item.ok.content.markup) : noImage})`,
-                                'backgroundSize': `${this.getUrlImg(item.ok.content.markup) ? 'cover' : 'contain'}`
+                                {
+                                    'backgroundImage': `url(${this.getUrlImg(item.ok.content.markup) ? this.getUrlImg(item.ok.content.markup) : noImage})`,
+                                    'backgroundSize': `${this.getUrlImg(item.ok.content.markup) ? 'cover' : 'contain'}`
                                 }
                             }
                         >
                         </div>
-    
-    
-                        <div dangerouslySetInnerHTML={{__html: this.getTextContent(item.ok.content.markup)}} className='textDoc'/>
+
+
+                        <div dangerouslySetInnerHTML={{ __html: this.getTextContent(item.ok.content.markup) }} className='textDoc' />
                     </div>
-                                        
-    
+
+
                     <div className='wrapperBottomDoc'>
                         <div className='btnLinkDoc'><a href={item.ok.url} target="_blank" rel="noreferrer" className='linkDoc'>Читать в источнике</a></div>
                         <div className='countWorld'>{item.ok.attributes.wordCount} {this.getWord(item.ok.attributes.wordCount)}</div>
-                    </div>   
+                    </div>
                 </div>
             )
         }
 
-        else {return}
+        else { return }
     }
 }
 

@@ -1,8 +1,11 @@
 @import '../../../../App.scss';
 
+.wrapper {
+    justify-content: space-between;
+}
+
 .wrapperForm {
     width: 429px;
-    margin-left: 65px;
     padding: 25px 25px 39px;
     border-radius: 10px;
     box-shadow: 0 0 20px rgba(0, 0, 0, .15);
@@ -43,44 +46,49 @@
         }
     }
 
-    .form { 
+    .form {
 
         [dataTooltip] {
-            position: relative; 
+            position: relative;
         }
 
 
         [datatooltip]::after {
-            content: attr(dataTooltip);    /* Выводим текст */
-            position: absolute;            
+            content: attr(dataTooltip);
+            /* Выводим текст */
+            position: absolute;
             z-index: 2;
-            top: 0px;                      /* Положение подсказки вначале*/
+            top: 0px;
+            /* Положение подсказки вначале*/
             left: -364px;
             box-sizing: border-box;
             width: 379px;
-            background: $prime_1;    /* Внешний вид */
+            background: $prime_1;
+            /* Внешний вид */
             color: $prime_3;
             border-radius: 5px;
             padding: 10px;
-            box-shadow:0 5px 12px #ccc;
-            opacity: 0;                    
-            transition:0.34s linear;       
-            pointer-events: none;          /* Предотвратить взаимодействие курсора мыши с подсказкой */
+            box-shadow: 0 5px 12px #ccc;
+            opacity: 0;
+            transition: 0.34s linear;
+            pointer-events: none;
+            /* Предотвратить взаимодействие курсора мыши с подсказкой */
         }
 
-        
+
         [datatooltip]:hover::after {
             opacity: 100%;
-            top: 77px;                      /*Положение подсказки */
-            left: -364px; 
+            top: 77px;
+            /*Положение подсказки */
+            left: -364px;
         }
 
         .button::after {
             left: 0;
         }
-        
-        .button:hover::after{
-            top: 63px;  
+
+        .button:hover::after {
+            top: 63px;
             left: 0;
         }
 
@@ -91,7 +99,7 @@
         }
 
         .questionSearch:hover::after {
-            top: 84px; 
+            top: 84px;
             left: -339px;
         }
 
@@ -161,27 +169,110 @@
     }
 }
 
-
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 1020px) {
     .wrapperForm {
-        margin: 50px 0 45px;
+        margin: 50px 0 40px 45px;
 
         .padlock {
-            top: -85px;
-            left: 30%;
+            left: 0%;
+            top: -77px;
+        }
+
+        .wrapperTab {
+            .tab {
+                min-width: auto;
+            }
+        }
+
+        .form {
+            [datatooltip]::after {
+                width: 60vw !important;
+                right: 0;
+                left: auto;
+            }
+
+            [datatooltip]:hover::after {
+                right: 0;
+                left: auto;
+                top: 20px !important;
+            }
+
+            .questionSearch::after,
+            .questionSearch:hover::after {
+                width: 60vw !important;
+                right: 0;
+                left: auto;
+                top: 80px !important;
+            }
+
+            .questionDate::after,
+            .questionDate:hover::after {
+                width: 60vw !important;
+                right: 0;
+                left: auto;
+                top: 150px !important;
+            }
+
+            .buttonSearch::after {
+                width: 60vw !important;
+                right: 0;
+                left: auto;
+            }
+
+            .button::after,
+            .button:hover::after {
+                width: 60vw !important;
+                right: 0;
+                left: auto;
+                top: 20px !important;
+            }
         }
     }
 }
 
 
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 767px) {
+    .wrapper {
+        .contentLeft {
+            h3 {
+                text-align: center;
+            }
+        }
+    }
+
     .wrapperForm {
+        width: auto;
         margin: 126px auto 0;
+
+        .wrapperTab {
+            .tab {
+                min-width: 45%;
+            }
+        }
     }
 }
 
+@media screen and (max-width: 480px) {
+    .wrapperForm {
+        .wrapperTab {
+            .tab {
+                padding: 0 7px 8px;
+            }
+        }
+    }
+}
 
-@media screen and (max-width: 335px) {
+@media screen and (max-width: 400px) {
+    .wrapperForm {
+        .wrapperTab {
+            .tab {
+                min-width: auto;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 360px) {
     .wrapperButtons {
         justify-content: space-between;
     }

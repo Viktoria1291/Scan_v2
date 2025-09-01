@@ -1,4 +1,4 @@
-import {ACTIONS} from './search.actions';
+import { ACTIONS } from './search.actions';
 
 
 // если авторизация прошла успешно и записывается токен, то записываем в userData данный код:
@@ -12,7 +12,7 @@ export const userData = {
 
 const initialState = {
     passwordVisible: false,
-    sendingRespAut: '',  
+    sendingRespAut: '',
     token: null,
     errorRespAut: null,
     accountSettings: null,
@@ -21,7 +21,7 @@ const initialState = {
 }
 
 const authReducer = (state = initialState, action) => {
-    switch(action.type) {
+    switch (action.type) {
 
         case ACTIONS.DISPLAY_AUTHORIZATION:
             return {
@@ -41,7 +41,7 @@ const authReducer = (state = initialState, action) => {
                 passwordVisible: !state.passwordVisible,
             }
 
-            
+
 
         case ACTIONS.SENDING_REQUEST_AUT:
             return {
@@ -81,7 +81,7 @@ const authReducer = (state = initialState, action) => {
         case ACTIONS.LOG_OUT_ACCOUNT:
             return {
                 ...state,
-                sendingRespAut: '',  
+                sendingRespAut: '',
                 token: null,
                 errorRespAut: null,
                 accountSettings: null,

@@ -4,8 +4,8 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
-import {BrowserRouter} from 'react-router-dom';
-import store, {persistor} from './components/store/store';
+import { BrowserRouter } from 'react-router-dom';
+import store, { persistor } from './components/store/store';
 import { PersistGate } from 'redux-persist/integration/react';
 
 

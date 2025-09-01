@@ -1,7 +1,7 @@
 @import '../../App.scss';
 
 :root {
-  --header-height: 93px;
+    --header-height: 93px;
 }
 
 header {
@@ -35,7 +35,7 @@ header {
 
             .a {
                 text-decoration: none;
-                font-size: 14px;
+                font-size: 16px;
                 color: $prime_2;
             }
 
@@ -69,7 +69,7 @@ header {
             }
 
             .propertyValue {
-                font-size: 14px;
+                font-size: 16px;
                 font-weight: 700;
             }
 
@@ -82,11 +82,12 @@ header {
             display: flex;
 
             .name {
-                font-size: 14px;
+                font-size: 16px;
                 text-align: right;
+                order: 1;
 
                 .exit {
-                    font-size: 10px;
+                    font-size: 12px;
                     opacity: 40%;
                     cursor: pointer;
                 }
@@ -98,6 +99,7 @@ header {
                 border-radius: 50%;
                 overflow: hidden;
                 margin-left: 10px;
+                order: 2;
             }
         }
     }
@@ -113,11 +115,11 @@ header {
             border: none;
             border-radius: 5px;
             padding: 5px 12px;
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 400;
             cursor: pointer;
             color: inherit; // Наследуем цвет текста
-            text-decoration: none; // Убираем подчеркивание
+            text-decoration: none;
         }
 
         .buttonHeader:hover {
@@ -143,37 +145,38 @@ header {
         position: absolute;
         background-color: $prime_1;
         border-radius: 5px;
-        width: 150px;
+        width: 200px;
         font-size: 13px;
         right: 0px;
         top: 70px;
         padding: 10px;
-        font-size: 14px;
+        font-size: 16px;
         display: none;
 
         .navBM {
             .ulBM {
-                padding: 0;                
+                padding: 0;
             }
 
             .liBM {
                 margin: 0 0 10px;
                 list-style-type: none;
-                cursor: pointer;                    
+                cursor: pointer;
             }
-    
+
             .aBM {
                 text-decoration: none;
-                color: $prime_3;                     
+                color: $prime_3;
             }
-        }   
+        }
 
         .accountDataBM {
             margin-top: 10px;
             font-size: 16px;
+            padding: 8px 16px;
 
             .exit {
-                font-size: 10px;
+                font-size: 12px;
                 cursor: pointer;
             }
         }
@@ -182,7 +185,7 @@ header {
     .aBM:hover {
         border-bottom: 1px solid $prime_3;
     }
-    
+
     .dropDown::before {
         content: "";
         border: 10px solid transparent;
@@ -191,10 +194,99 @@ header {
         top: -17px;
         right: 5px;
     }
+
+    // Стили для кнопок, которые выглядят как ссылки
+    button.anchor-button,
+    button.aBM {
+        background: none;
+        border: none;
+        color: inherit;
+        font: inherit;
+        cursor: pointer;
+        padding: 0;
+        text-decoration: none;
+        display: inline;
+        text-align: left;
+
+        &:hover {
+            color: inherit;
+            text-decoration: underline;
+        }
+    }
+
+    // Специфичные стили для кнопок в основном меню
+    .nav .ul .li button.a {
+        background: transparent;
+        border: none;
+        color: $prime_2;
+        font-size: 16px;
+        cursor: pointer;
+        padding: 0;
+
+        &:hover {
+            color: $supplemental_3;
+            text-decoration: underline;
+        }
+    }
+
+    // Специфичные стили для кнопок в бургер-меню
+    .ulBM button.aBM {
+        background: transparent;
+        border: none;
+        color: $prime_3;
+        font-size: 16px;
+        cursor: pointer;
+        padding: 0;
+        text-decoration: none;
+        display: block;
+        width: 100%;
+        text-align: left;
+
+        &:hover {
+            color: $prime_3;
+            border-bottom: 1px solid $prime_3;
+            text-decoration: none;
+        }
+    }
+
+    // Убедимся, что кнопки в выпадающем меню имеют правильные отступы
+    .dropDown .navBM .liBM button.aBM {
+        margin: 0 0 10px;
+        padding: 8px 16px;
+    }
+
+    // Стили для кнопок-ссылок в бургер-меню при наведении
+    .dropDown .navBM .liBM button.aBM:hover {
+        background-color: transparent;
+        border-bottom: 1px solid $prime_3;
+    }
 }
 
+@media screen and (max-width: 1020px) {
+    .header {
+        .wrapperPersonalData {
+            .accountSettings {
+                min-width: 150px;
+            }
 
-@media screen and (max-width: 600px) {
+            .accountData {
+                flex-direction: column;
+
+                .name {
+                    order: 2;
+                }
+
+                .avatar {
+                    order: 1;
+                    margin-left: auto;
+                    margin-bottom: 4px;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 767px) {
     .header {
         .nav {
             display: none;
@@ -204,7 +296,9 @@ header {
             display: none;
         }
 
-        .wrapperPersonalData{
+        .wrapperPersonalData {
+            justify-content: end;
+
             .accountData {
                 display: none;
             }
@@ -216,6 +310,16 @@ header {
 
         .dropDown {
             display: block;
+        }
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .header {
+        .wrapperPersonalData {
+            .accountSettings {
+                min-width: 80px;
+            }
         }
     }
 }

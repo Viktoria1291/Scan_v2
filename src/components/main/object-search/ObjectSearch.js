@@ -1,13 +1,22 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './object-search.scss';
-import {useSelector} from 'react-redux';
-import {Navigate, useLocation} from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { Navigate, useLocation } from 'react-router-dom';
 import Histograms from './histograms/Histograms';
 import ScanDoc from './scanDoc/ScanDoc';
 import spinner from './images/spinner_big.svg';
 
 
-function ObjectSearch () {
+function ObjectSearch() {
+    useEffect(() => {
+        // Плавная прокрутка к верху
+        window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: 'smooth' // опционально: плавная прокрутка
+        });
+    }, []);
+
     // достаем из стора токен и гистограмму
     const token = useSelector(state => state.loginReduсer.token);
     const histograms = useSelector(state => state.objectSearchReducer.histograms);
@@ -18,10 +27,10 @@ function ObjectSearch () {
 
     // СТЕЙТ: количество видимых статей
     const [visibleInd, setVisibleInd] = React.useState(10);
-    
+
     // достаем из стора скандок
     const scanDoc = useSelector(state => state.objectSearchReducer.scanDoc);
-    
+
 
     // увеличение количества видимых статей
     const showMore = () => {
@@ -29,10 +38,10 @@ function ObjectSearch () {
     }
 
     return (
-    // ecли нет авторизации, то редиректим на authorization
+        // ecли нет авторизации, то редиректим на authorization
         !token ?
-        <Navigate to={"/authorization"} state={{from: location}}/>
-        :
+            <Navigate to={"/authorization"} state={{ from: location }} />
+            :
             <div className='container'>
                 <section className='objectSarch_section1'>
                     <div className='content_left'>
@@ -42,7 +51,7 @@ function ObjectSearch () {
                     <div className='content_right'></div>
                 </section>
 
-                <Histograms/>
+                <Histograms />
 
                 <section className='objectSarch_section3'>
                     <h4 className='h h4'>Список документов</h4>
@@ -70,12 +79,12 @@ function ObjectSearch () {
                     </div>
 
 
-                    {visibleInd <= scanDoc.length ? 
-                    <button className='button btnObjectSearch' onClick={showMore}>Показать больше</button>
-                    : ''}
+                    {visibleInd <= scanDoc.length ?
+                        <button className='button btnObjectSearch' onClick={showMore}>Показать больше</button>
+                        : ''}
                 </section>
             </div>
-        ) 
+    )
 }
 
 export default ObjectSearch;

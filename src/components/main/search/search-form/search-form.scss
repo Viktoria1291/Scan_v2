@@ -7,7 +7,7 @@
     margin: 0 0 64px;
     color: #000;
     font-size: 18px;
-    padding: 29px 39px 32px 44px;
+    padding: 29px 39px 32px 39px;
 
     .formLeft {
         width: 374px;
@@ -39,38 +39,48 @@
     }
 }
 
-
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 1400px) {
     .formSearch {
-        width: 860px;
-        justify-content: space-between;
+        width: 100%;
+        margin: 0 auto;
+        justify-content: center;
 
-        .formRight {
-            width: 394px;
-            min-width: 394px;
+        .formLeft {
+            margin-right: 60px;
         }
     }
 }
 
-
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 1020px) {
     .formSearch {
-        width: 100%;
-        margin: 0 auto 64px;
         flex-direction: column;
+
+        .formLeft {
+            min-width: 100%;
+            width: 100%;
+            margin: 0;
+        }
+
+        .formRight {
+            min-width: 100%;
+            width: 100%;
+
+            .wrapperButton {
+                margin: 0 0 0 auto;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .formSearch {
+        padding: 29px 20px 32px 20px;
 
         .formRight {
             .wrapperButton {
-                margin: 0px auto 0;
+                margin: 0 auto;
+                width: 100%;
             }
-        }
-        
-        .wrapperInput input {
-            display: flex;
-        }
-
-        .form_chek {
-            display: none;
         }
     }
 }

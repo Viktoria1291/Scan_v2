@@ -3,20 +3,55 @@ import './histograms.scss';
 import arrow_left_carousel_active from './images/arrow_left_carousel_active.png';
 import arrow_right_carousel_active from './images/arrow_right_carousel_active.png';
 import spinner from '../../../header/images/spinner.png';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 
-
-function Histograms () {
-    // СТЕЙТ: текущее смещение слайдера, max смещение слайлера, ширина экрана
+function Histograms() {
     const [offset, setOffset] = React.useState(0);
+    const [visibleColumns, setVisibleColumns] = React.useState(8);
+    const [columnWidth, setColumnWidth] = React.useState(140);
 
-    // достаем из стора histograms
     const histograms = useSelector(state => state.objectSearchReducer.histograms);
-
     const searchResultItem = useSelector(state => state.objectSearchReducer.searchResultItem);
-    console.log("searchResultItem: " + searchResultItem.length); 
 
-    // перебираем histograms и сортируем его элементы по дате с помощью ф-и sortHist
+    // Эффект для изменения ширины колонки при изменении размера окна
+    React.useEffect(() => {
+        const updateColumnWidth = () => {
+            if (window.innerWidth <= 480) {
+                setColumnWidth(110); // 110px для экранов ≤ 480px
+            } else {
+                setColumnWidth(140); // 140px для больших экранов
+            }
+        };
+
+        updateColumnWidth();
+        window.addEventListener('resize', updateColumnWidth);
+
+        return () => window.removeEventListener('resize', updateColumnWidth);
+    }, []);
+
+    // Эффект для расчета количества видимых колонок
+    React.useEffect(() => {
+        const handleResize = () => {
+            const containerWidth = document.querySelector('.histograms')?.offsetWidth || 1142;
+            const columnNamesWidth = window.innerWidth <= 480 ? 110 : 140; // соответствуем ширине columnNames
+            const availableWidth = containerWidth - columnNamesWidth;
+
+            const maxVisibleColumns = Math.floor(availableWidth / columnWidth);
+            const actualVisibleColumns = Math.min(
+                maxVisibleColumns,
+                sortedHistograms?.[0]?.data?.length || 8
+            );
+
+            setVisibleColumns(Math.max(1, actualVisibleColumns));
+        };
+
+        handleResize();
+        window.addEventListener('resize', handleResize);
+
+        return () => window.removeEventListener('resize', handleResize);
+    }, [columnWidth, histograms]);
+
+    // перебираем histograms и сортируем его элементы по дате
     let sortedHistograms;
     if (histograms) {
         sortedHistograms = histograms.map(item => {
@@ -40,33 +75,6 @@ function Histograms () {
             return [...sortHist(less), pivot, ...sortHist(greater)];
         }
     };
-    
-
-    let numVC;
-    let widthVC;
-    if (histograms && histograms.length) {
-        if (window.innerWidth > 900) {
-            if (sortedHistograms[0].data.length <= 8) {
-                numVC = sortedHistograms[0].data.length;
-                widthVC = (((1142/sortedHistograms[0].data.length)*100)/1282);
-            } else {
-                numVC = 8;
-                widthVC = 10.92;
-            }
-        } else if (window.innerWidth <= 900 && window.innerWidth > 600) {
-            if (sortedHistograms[0].data.length <= 4) {
-                numVC = sortedHistograms[0].data.length;
-                widthVC = (((642/sortedHistograms[0].data.length)*100)/782);
-            } else {
-                numVC = 4;
-                widthVC = 19.82;
-            }
-        } else {
-            numVC = 1;
-            widthVC = 100;
-        }
-    }
-    
 
     // функция для изменения окончания подсчета вариантов
     const getWord = (count) => {
@@ -74,39 +82,25 @@ function Histograms () {
             return 'вариантов';
         } else {
             count %= 10;
-            if (count === 1) {return 'вариант'}
-            else if (count >= 2 && count <= 4) {return 'варианта'}
-            else {return 'вариантов'}
+            if (count === 1) { return 'вариант' }
+            else if (count >= 2 && count <= 4) { return 'варианта' }
+            else { return 'вариантов' }
         }
     }
-
 
     // функция передвигания слайдера
     const moveSlider = (side) => {
-        if (window.innerWidth > 600) {
-            if (side === 'left') {
-                if (offset < 0) {
-                    setOffset(offset + widthVC);
-            } else {return}
-            } else {
-                if (offset > ((-sortedHistograms[0].data.length + numVC) * widthVC)) {
-                    setOffset(offset - widthVC);
-                } else {return};
-            }
-        }
-        else {
-            if (side === 'left') {
-                if (offset < 0) {
-                    setOffset(offset + 100);
-                } else {return}
-            } else {
-                if (offset > ((-sortedHistograms[0].data.length + numVC) * widthVC)) {
-                    setOffset(offset - 100);
-                } else {return};
-            }
+        if (!sortedHistograms?.[0]?.data) return;
+
+        const totalColumns = sortedHistograms[0].data.length;
+        const maxOffset = -((totalColumns - visibleColumns) * columnWidth);
+
+        if (side === 'left') {
+            setOffset(prev => Math.min(0, prev + columnWidth));
+        } else {
+            setOffset(prev => Math.max(maxOffset, prev - columnWidth));
         }
     }
-
 
     return (
         <section className='objectSarch_section2'>
@@ -114,8 +108,9 @@ function Histograms () {
             <p className='found'>Найдено {searchResultItem.length} {getWord(searchResultItem.length)}</p>
 
             <div className='wrapper_histograms'>
-                <div  onClick={() => moveSlider('left')}>
-                    <img src={arrow_left_carousel_active} alt="Стрелка влево" className={`${Math.round(offset) ? 'arrow_active' : 'arrow_passive'}`}/>
+                <div onClick={() => moveSlider('left')}>
+                    <img src={arrow_left_carousel_active} alt="Стрелка влево"
+                        className={offset < 0 ? 'arrow_active' : 'arrow_passive'} />
                 </div>
 
                 <div className='histograms'>
@@ -128,13 +123,19 @@ function Histograms () {
                     {!histograms ?
                         <div className='spinner'><img src={spinner} alt="" /></div>
                         :
-                        histograms.length ? /* ПРОБЛЕМА В ЭТОМ УСЛОВИИ */
-                            <div className='flow' style={{'transform': `translateX(${offset}%)`}}>
+                        histograms.length ?
+                            <div className='flow' style={{
+                                'transform': `translateX(${offset}px)`,
+                                'width': `${sortedHistograms[0].data.length * columnWidth}px`
+                            }}>
                                 {sortedHistograms[0].data.map((item, index) => {
                                     return (
-                                        <div 
-                                            className='columnResult column' 
-                                            style={{'minWidth': `${Math.round(widthVC * 100) / 100}%`}}
+                                        <div
+                                            className='columnResult column'
+                                            style={{
+                                                'width': `${columnWidth}px`,
+                                                'minWidth': `${columnWidth}px`
+                                            }}
                                             key={index}
                                         >
                                             <p className='elemColumn'>{new Intl.DateTimeFormat('ru').format(new Date(item.date))}</p>
@@ -150,11 +151,12 @@ function Histograms () {
                 </div>
 
                 <div className='arrow_carousel right' onClick={() => moveSlider('right')}>
-                    <img 
-                        src={arrow_right_carousel_active} 
-                        alt="Стрелка вправо" 
-                        className={`${!histograms || !histograms.length ? 'arrow_passive' :
-                        offset === ((-sortedHistograms[0].data.length + numVC) * widthVC) ? 'arrow_passive' : 'arrow_active'}`}
+                    <img
+                        src={arrow_right_carousel_active}
+                        alt="Стрелка вправо"
+                        className={!histograms || !histograms.length ? 'arrow_passive' :
+                            offset > -((sortedHistograms?.[0]?.data?.length - visibleColumns) * columnWidth) ?
+                                'arrow_active' : 'arrow_passive'}
                     />
                 </div>
             </div>

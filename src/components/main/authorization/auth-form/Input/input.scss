@@ -23,8 +23,6 @@
         .questionSearch {
             margin-right: 20px;
         }
-
-        // остальные параметры подсказки выше уровнем 
     }
 
 
@@ -45,7 +43,10 @@
         box-shadow: 0 0 20px rgba(0, 0, 0, .05);
     }
 
-    .inputSearch::-webkit-input-placeholder,.inputSearch:-ms-input-placeholder, .inputSearch::-moz-placeholder, .inputSearch::-moz-placeholder {
+    .inputSearch::-webkit-input-placeholder,
+    .inputSearch:-ms-input-placeholder,
+    .inputSearch::-moz-placeholder,
+    .inputSearch::-moz-placeholder {
         color: $prime_4;
         font-size: 14px;
         text-align: center;
@@ -64,7 +65,7 @@
         box-shadow: 0 0 10px rgba(255, 89, 89, .3);
         border: 1px solid rgb(255, 89, 89);
     }
-    
+
     .eye {
         height: 28px;
         position: absolute;
@@ -81,17 +82,16 @@
     margin-top: 0;
 }
 
-
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 1020px) {
     .wrapperInput {
-        .inputSearch {
-            width: 335px;
+        .wrapperLabel {
+            .questionSearch {
+                margin-right: 0;
+            }
         }
 
-        .inputDate {
-            width: 335px;
+        .inputSearch {
+            width: 100%;
         }
     }
 }
-
-

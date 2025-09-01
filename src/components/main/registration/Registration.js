@@ -4,7 +4,7 @@ import './registration.scss';
 function Registration() {
     return (
         <div>
-            <h1 className='registration'>Регистрация</h1>
+            <h1 className='registration h h2'>Регистрация</h1>
         </div>
     )
 }

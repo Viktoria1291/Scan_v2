@@ -4,7 +4,7 @@
 .objectSarch_section1 {
     display: flex;
     justify-content: space-between;
-    margin: 69px 0 0px;
+    margin: 60px 0 0px;
 
     .content_left {
         width: 45%;
@@ -34,7 +34,7 @@
 
 
 .objectSarch_section3 {
-    margin-top: 107px;
+    margin-top: 120px;
 
     .wrapperDoc {
         display: flex;
@@ -42,9 +42,9 @@
         justify-content: space-between;
         margin-top: 58px;
 
-        .spinner  {
+        .spinner {
             margin: 0 auto 50px;
-            
+
 
             img {
                 width: 80px;
@@ -60,7 +60,7 @@
 }
 
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 1020px) {
     .objectSarch_section1 {
         .content_right {
             .imgObjSear {
@@ -70,7 +70,6 @@
     }
 
     .objectSarch_section3 {
-    
         .wrapperDoc {
             flex-wrap: nowrap;
             flex-direction: column;
@@ -83,17 +82,25 @@
 }
 
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 767px) {
     .objectSarch_section1 {
         flex-direction: column;
+        margin: 20px 0 0px;
 
         .content_left {
             width: 80%;
         }
-    
+
         .content_right {
             width: 100%;
         }
     }
-}
 
+    .objectSarch_section3 {
+        margin-top: 40px;
+
+        .wrapperDoc {
+            margin-top: 20px;
+        }
+    }
+}

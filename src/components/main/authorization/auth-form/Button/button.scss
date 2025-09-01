@@ -1,6 +1,5 @@
 @import '../../../../../App.scss';
 
-
 .button {
     width: 100%;
     height: 59px;
@@ -25,5 +24,17 @@
 .btnObjectSearch {
     width: 305px;
     display: block;
-    margin: 0 auto 109px;
+    margin: 0 auto 60px;
+}
+
+@media screen and (max-width: 767px) {
+    .btnObjectSearch {
+        margin: 0 auto 20px;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .btnObjectSearch {
+        width: 100%;
+    }
 }

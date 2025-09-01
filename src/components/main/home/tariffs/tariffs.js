@@ -24,7 +24,7 @@ const tariffPlans = {
         bonus: [
             'Безлимитная история запросов',
             'Безопасная сделка',
-            'Поддержка 24/7', 
+            'Поддержка 24/7',
         ],
         background: supplemental_1,
         color: prime_2,
@@ -39,7 +39,7 @@ const tariffPlans = {
         bonus: [
             'Все пункты тарифа Beginner',
             'Экспорт истории',
-            'Рекомендации по приоритетам', 
+            'Рекомендации по приоритетам',
         ],
         background: supplemental_2,
         color: prime_2,
@@ -62,12 +62,12 @@ const tariffPlans = {
 }
 
 
-function Tarrifs () {
+function Tarrifs() {
     return (
         <div className={`hom_sec3_tariffs`}>
-            <TariffItem tarif={tariffPlans.beginner}/>
-            <TariffItem tarif={tariffPlans.pro}/>
-            <TariffItem tarif={tariffPlans.business}/>
+            <TariffItem tarif={tariffPlans.beginner} />
+            <TariffItem tarif={tariffPlans.pro} />
+            <TariffItem tarif={tariffPlans.business} />
         </div>
     )
 }
