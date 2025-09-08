@@ -13,7 +13,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={store}>
     <React.StrictMode>
-      <BrowserRouter>
+      <BrowserRouter basename="/Scan_v2">
         <PersistGate loading={null} persistor={persistor}>
           <App />
         </PersistGate>
